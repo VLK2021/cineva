@@ -1,6 +1,7 @@
 import { HeaderLogo } from "@/src/components/header/HeaderLogo";
 import { HeaderNavigation, movieGenres, tvGenres } from "@/src/components/header/HeaderNavigation";
 import { HeaderMobileMenu } from "@/src/components/header/HeaderMobileMenu";
+import {HeaderSearch} from "@/src/components/header/HeaderSearch";
 
 const Header = () => {
     return (
@@ -34,7 +35,7 @@ const Header = () => {
                 </div>
 
                 <div className="hidden w-full max-w-[320px] shrink items-center justify-end lg:flex">
-                    Search
+                    <HeaderSearch/>
                 </div>
 
                 <div className="ml-auto flex shrink-0 items-center justify-end gap-2 sm:gap-3">

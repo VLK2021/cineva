@@ -19,9 +19,9 @@ const HeaderMegaMenu = ({ items }: HeaderMegaMenuProps) => {
                 left-0
                 top-full
                 z-50
-                w-[460px]
+                w-[660px]
                 translate-y-2
-                pt-3
+                pt-5
                 opacity-0
                 transition-all
                 duration-200
