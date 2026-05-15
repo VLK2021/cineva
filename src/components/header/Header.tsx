@@ -1,9 +1,8 @@
 import { HeaderLogo } from "@/src/components/header/HeaderLogo";
-
+import { HeaderNavigation, movieGenres, tvGenres } from "@/src/components/header/HeaderNavigation";
+import { HeaderMobileMenu } from "@/src/components/header/HeaderMobileMenu";
 
 const Header = () => {
-
-
     return (
         <header
             className="
@@ -18,62 +17,29 @@ const Header = () => {
         >
             <div
                 className="
-                    flex
-                    h-14
-                    w-full
-                    items-center
-                    justify-between
-                    gap-3
-                    px-3
-                    sm:h-16
-                    sm:px-5
+                    relative
+                    flex h-14 w-full items-center gap-3 px-3
+                    sm:h-16 sm:px-5
                     md:px-6
                     lg:px-8
                     xl:px-10
                 "
             >
-                <div
-                    className="
-                        flex
-                        min-w-[130px]
-                        max-w-[220px]
-                        shrink-0
-                        items-center
-                        justify-start
-                        sm:min-w-[160px]
-                        md:min-w-[190px]
-                    "
-                >
+                <div className="flex shrink-0 items-center justify-start">
                     <HeaderLogo />
                 </div>
 
-                <nav
-                    className="
-                        hidden
-                        flex-1
-                        items-center
-                        justify-center
-                        text-sm
-                        font-medium
-                        md:flex
-                    "
-                >
-                    Navigation
-                </nav>
+                <div className="hidden flex-1 items-center justify-center md:flex">
+                    <HeaderNavigation />
+                </div>
 
-                <div
-                    className="
-                        flex
-                        min-w-[110px]
-                        shrink-0
-                        items-center
-                        justify-end
-                        gap-2
-                        sm:min-w-[140px]
-                        sm:gap-3
-                    "
-                >
+                <div className="hidden w-full max-w-[320px] shrink items-center justify-end lg:flex">
+                    Search
+                </div>
+
+                <div className="ml-auto flex shrink-0 items-center justify-end gap-2 sm:gap-3">
                     Actions
+                    <HeaderMobileMenu movieGenres={movieGenres} tvGenres={tvGenres} />
                 </div>
             </div>
         </header>
