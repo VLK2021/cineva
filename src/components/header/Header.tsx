@@ -1,6 +1,9 @@
-import {HeaderLogo} from "@/src/components/header/HeaderLogo";
+import { HeaderLogo } from "@/src/components/header/HeaderLogo";
+
 
 const Header = () => {
+
+
     return (
         <header
             className="
@@ -15,32 +18,61 @@ const Header = () => {
         >
             <div
                 className="
-                    mx-auto
                     flex
                     h-14
                     w-full
-                    max-w-7xl
                     items-center
                     justify-between
                     gap-3
-                    px-4
+                    px-3
                     sm:h-16
-                    sm:px-6
+                    sm:px-5
+                    md:px-6
                     lg:px-8
+                    xl:px-10
                 "
             >
-                {/* LEFT: Logo */}
-                <div className="flex w-[15%] min-w-[150px] shrink-0 items-center justify-start">
+                <div
+                    className="
+                        flex
+                        min-w-[130px]
+                        max-w-[220px]
+                        shrink-0
+                        items-center
+                        justify-start
+                        sm:min-w-[160px]
+                        md:min-w-[190px]
+                    "
+                >
                     <HeaderLogo />
                 </div>
 
-                {/* CENTER: Navigation */}
-                <nav className="hidden flex-1 items-center justify-center md:flex">
+                <nav
+                    className="
+                        hidden
+                        flex-1
+                        items-center
+                        justify-center
+                        text-sm
+                        font-medium
+                        md:flex
+                    "
+                >
                     Navigation
                 </nav>
 
-                {/* RIGHT: Actions */}
-                <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+                <div
+                    className="
+                        flex
+                        min-w-[110px]
+                        shrink-0
+                        items-center
+                        justify-end
+                        gap-2
+                        sm:min-w-[140px]
+                        sm:gap-3
+                    "
+                >
                     Actions
                 </div>
             </div>
