@@ -1,12 +1,26 @@
-import {getPopularMovies} from "@/src/services";
-import {HeroSlider} from "@/src/components/home";
+import { HeroSlider } from "@/src/components/home/HeroSlider";
+import { HomeMovieSection } from "@/src/components/home/HomeMovieSection";
+import { getPopularMovies, getTopRatedMovies } from "@/src/services";
 
 export default async function Home() {
-    const popular = await getPopularMovies();
+    const [popularMovies, topRatedMovies] = await Promise.all([
+        getPopularMovies(),
+        getTopRatedMovies(),
+    ]);
 
     return (
-        <main className="p-6">
-            <HeroSlider movies={popular.results.slice(0, 8)} />
+        <main>
+            <HeroSlider movies={popularMovies.results.slice(0, 8)} />
+
+            <HomeMovieSection
+                title="Популярні фільми"
+                movies={popularMovies.results}
+            />
+
+            <HomeMovieSection
+                title="Топ рейтинг"
+                movies={topRatedMovies.results}
+            />
         </main>
     );
 }
