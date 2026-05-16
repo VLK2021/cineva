@@ -1,9 +1,12 @@
+import {getPopularMovies} from "@/src/services";
+import {HeroSlider} from "@/src/components/home";
 
-export default function Home() {
+export default async function Home() {
+    const popular = await getPopularMovies();
 
     return (
-        <div>
-            CINEVA
-        </div>
+        <main className="p-6">
+            <HeroSlider movies={popular.results.slice(0, 8)} />
+        </main>
     );
 }
