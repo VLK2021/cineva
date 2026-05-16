@@ -36,11 +36,11 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
     const trailer = getBestTrailer(allVideos);
 
-    const movieTitles = buildKinoBdTitleCandidates({
-        ruTitle: ruMovie.title,
-        ukTitle: movie.title,
-        originalTitle: movie.original_title,
-    });
+    // const movieTitles = buildKinoBdTitleCandidates({
+    //     ruTitle: ruMovie.title,
+    //     ukTitle: movie.title,
+    //     originalTitle: movie.original_title,
+    // });
 
     const cast = movie.credits?.cast.slice(0, 18) ?? [];
     const crew = movie.credits?.crew.slice(0, 12) ?? [];
@@ -55,7 +55,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
             <MovieMediaSection
                 trailer={trailer}
-                movieTitles={movieTitles}
+                kinopoiskId={movie.imdb_id}
+                movieTitle={ruMovie.title || movie.title || movie.original_title}
             />
 
             <MovieCastSection cast={cast} />
