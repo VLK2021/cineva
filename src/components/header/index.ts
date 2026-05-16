@@ -5,3 +5,4 @@ export * from './HeaderNavigation';
 export * from './HeaderMobileMenu';
 export * from './HeaderSearch';
 export * from './HeaderMobileSearch';
+export * from './HeaderActions';

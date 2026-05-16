@@ -1,8 +1,9 @@
-import { HeaderLogo } from "@/src/components/header/HeaderLogo";
-import { HeaderNavigation, movieGenres, tvGenres } from "@/src/components/header/HeaderNavigation";
-import { HeaderMobileMenu } from "@/src/components/header/HeaderMobileMenu";
-import { HeaderSearch } from "@/src/components/header/HeaderSearch";
-import { HeaderMobileSearch } from "@/src/components/header/HeaderMobileSearch";
+import {HeaderLogo} from "@/src/components/header/HeaderLogo";
+import {HeaderNavigation, movieGenres, tvGenres} from "@/src/components/header/HeaderNavigation";
+import {HeaderMobileMenu} from "@/src/components/header/HeaderMobileMenu";
+import {HeaderSearch} from "@/src/components/header/HeaderSearch";
+import {HeaderMobileSearch} from "@/src/components/header/HeaderMobileSearch";
+import {HeaderActions} from "@/src/components/header/HeaderActions";
 
 const Header = () => {
     return (
@@ -38,11 +39,11 @@ const Header = () => {
                 "
             >
                 <div className="flex shrink-0 items-center justify-start">
-                    <HeaderLogo />
+                    <HeaderLogo/>
                 </div>
 
                 <div className="hidden flex-1 items-center justify-center md:flex">
-                    <HeaderNavigation />
+                    <HeaderNavigation/>
                 </div>
 
                 <div
@@ -56,7 +57,7 @@ const Header = () => {
                         lg:flex
                     "
                 >
-                    <HeaderSearch />
+                    <HeaderSearch/>
                 </div>
 
                 <div
@@ -70,11 +71,9 @@ const Header = () => {
                         sm:gap-3
                     "
                 >
-                    <HeaderMobileSearch />
+                    <HeaderMobileSearch/>
 
-                    <span className="text-sm font-medium">
-                        Actions
-                    </span>
+                    <HeaderActions/>
 
                     <HeaderMobileMenu
                         movieGenres={movieGenres}
@@ -86,4 +85,4 @@ const Header = () => {
     );
 };
 
-export { Header };
+export {Header};
