@@ -4,3 +4,4 @@ export * from './HeaderMegaMenu';
 export * from './HeaderNavigation';
 export * from './HeaderMobileMenu';
 export * from './HeaderSearch';
+export * from './HeaderMobileSearch';
