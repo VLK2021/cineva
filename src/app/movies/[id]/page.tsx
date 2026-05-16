@@ -1,14 +1,14 @@
-import {getMovieDetailsWithAppend, getMovieVideos} from "@/src/services";
+import { getMovieDetailsWithAppend, getMovieVideos, getMovieDetails } from "@/src/services";
 import {
     MovieCastSection,
     MovieCrewSection,
     MovieHero,
     MovieInfoSection,
+    MovieMediaSection,
     MovieRelatedSection,
-    MovieTrailerSection,
 } from "@/src/components/movie-single";
-import {getBestTrailer} from "@/src/helpers/movieVideo.helpers";
-
+import { getBestTrailer } from "@/src/helpers/movieVideo.helpers";
+import { buildKinoBdTitleCandidates } from "@/src/helpers/kinoBd.helpers";
 
 type MoviePageProps = {
     params: Promise<{
@@ -16,17 +16,12 @@ type MoviePageProps = {
     }>;
 };
 
+export default async function MoviePage({ params }: MoviePageProps) {
+    const { id } = await params;
 
-export default async function MoviePage({params}: MoviePageProps) {
-    const {id} = await params;
-
-    const [
-        movie,
-        ukVideos,
-        ruVideos,
-        enVideos,
-    ] = await Promise.all([
+    const [movie, ruMovie, ukVideos, ruVideos, enVideos] = await Promise.all([
         getMovieDetailsWithAppend(id, "uk-UA"),
+        getMovieDetails(id, "ru-RU"),
         getMovieVideos(id, "uk-UA"),
         getMovieVideos(id, "ru-RU"),
         getMovieVideos(id, "en-US"),
@@ -41,6 +36,12 @@ export default async function MoviePage({params}: MoviePageProps) {
 
     const trailer = getBestTrailer(allVideos);
 
+    const movieTitles = buildKinoBdTitleCandidates({
+        ruTitle: ruMovie.title,
+        ukTitle: movie.title,
+        originalTitle: movie.original_title,
+    });
+
     const cast = movie.credits?.cast.slice(0, 18) ?? [];
     const crew = movie.credits?.crew.slice(0, 12) ?? [];
     const similarMovies = movie.similar?.results.slice(0, 8) ?? [];
@@ -48,15 +49,18 @@ export default async function MoviePage({params}: MoviePageProps) {
 
     return (
         <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
-            <MovieHero movie={movie} trailer={trailer}/>
+            <MovieHero movie={movie} trailer={trailer} />
 
-            <MovieInfoSection movie={movie}/>
+            <MovieInfoSection movie={movie} />
 
-            <MovieTrailerSection trailer={trailer}/>
+            <MovieMediaSection
+                trailer={trailer}
+                movieTitles={movieTitles}
+            />
 
-            <MovieCastSection cast={cast}/>
+            <MovieCastSection cast={cast} />
 
-            <MovieCrewSection crew={crew}/>
+            <MovieCrewSection crew={crew} />
 
             <MovieRelatedSection
                 title="Схожі фільми"
