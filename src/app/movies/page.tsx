@@ -37,6 +37,7 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
     return (
         <main className="min-h-screen bg-[var(--color-background)] px-4 py-10 text-[var(--color-text)] sm:px-6 lg:px-10">
             <MoviesPageHeader
+                genre={params.genre}
                 sort={params.sort}
                 year={params.year}
             />
