@@ -10,7 +10,7 @@ import {
     TvRelatedSection,
     TvReviewsSection,
     TvSeasonsSection,
-    TvTrailerSection,
+    TvMediaSection,
 } from "@/src/components/tv-single";
 import {
     getTvDetailsWithAppend,
@@ -77,7 +77,11 @@ export default async function TvPage({ params }: TvPageProps) {
 
             <TvMetaSections tv={tv} />
 
-            <TvTrailerSection trailer={trailer} />
+            <TvMediaSection
+                trailer={trailer}
+                imdbId={tv.external_ids?.imdb_id}
+                tvTitle={tv.name || tv.original_name}
+            />
 
             <TvCastSection cast={cast} />
 

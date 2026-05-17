@@ -1,5 +1,4 @@
 export * from './TvHero';
-export * from './TvTrailerSection';
 export * from './TvInfoSection';
 export * from './TvCrewSection';
 export * from './TvSeasonsSection';
@@ -10,3 +9,5 @@ export * from './TvExternalSection';
 export * from './TvEpisodesSection';
 export * from './TvMetaSections';
 export * from './TvReviewsSection';
+export * from './TvKinoBdPlayerTab';
+export * from './TvMediaSection';
