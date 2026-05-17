@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Users } from "lucide-react";
-import type { TvCastMember } from "@/src/types/tv.types";
+import type { TvAggregateCastMember } from "@/src/types/tv.types";
 
 type TvCastSectionProps = {
-    cast: TvCastMember[];
+    cast: TvAggregateCastMember[];
 };
 
 const IMAGE_BASE_URL =
@@ -20,34 +20,45 @@ const TvCastSection = ({ cast }: TvCastSectionProps) => {
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                {cast.map((actor) => (
-                    <div
-                        key={actor.credit_id}
-                        className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-sm"
-                    >
-                        <div className="relative aspect-[2/3] bg-[var(--color-border)]">
-                            {actor.profile_path ? (
-                                <Image
-                                    src={`${IMAGE_BASE_URL}/w300${actor.profile_path}`}
-                                    alt={actor.name}
-                                    fill
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                    Немає фото
-                                </div>
-                            )}
-                        </div>
+                {cast.map((actor) => {
+                    const role = actor.roles?.[0];
 
-                        <div className="p-3">
-                            <p className="line-clamp-1 text-sm font-black">{actor.name}</p>
-                            <p className="mt-1 line-clamp-2 text-xs text-[var(--color-text-muted)]">
-                                {actor.character || "—"}
-                            </p>
+                    return (
+                        <div
+                            key={`${actor.id}-${role?.credit_id ?? actor.total_episode_count}`}
+                            className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-sm"
+                        >
+                            <div className="relative aspect-[2/3] bg-[var(--color-border)]">
+                                {actor.profile_path ? (
+                                    <Image
+                                        src={`${IMAGE_BASE_URL}/w300${actor.profile_path}`}
+                                        alt={actor.name}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
+                                        Немає фото
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="p-3">
+                                <p className="line-clamp-1 text-sm font-black">
+                                    {actor.name}
+                                </p>
+
+                                <p className="mt-1 line-clamp-2 text-xs text-[var(--color-text-muted)]">
+                                    {role?.character || "—"}
+                                </p>
+
+                                <p className="mt-2 text-xs font-bold text-[var(--color-brand)]">
+                                    {actor.total_episode_count} серій
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </section>
     );

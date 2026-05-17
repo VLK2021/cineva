@@ -1,15 +1,20 @@
 import { BackButton } from "@/src/components/common/BackButton";
 import {
+    TvAdvancedInfoSection,
     TvCastSection,
     TvCrewSection,
+    TvEpisodesSection,
+    TvExternalSection,
     TvHero,
-    TvInfoSection,
+    TvMetaSections,
     TvRelatedSection,
+    TvReviewsSection,
     TvSeasonsSection,
     TvTrailerSection,
 } from "@/src/components/tv-single";
 import {
     getTvDetailsWithAppend,
+    getTvSeasonDetails,
     getTvVideos,
 } from "@/src/services";
 import { getBestTvTrailer } from "@/src/helpers/tvVideo.helpers";
@@ -30,6 +35,16 @@ export default async function TvPage({ params }: TvPageProps) {
         getTvVideos(id, "en-US"),
     ]);
 
+    const seasonDetails = await Promise.all(
+        tv.seasons.map((season) =>
+            getTvSeasonDetails({
+                tvId: id,
+                seasonNumber: season.season_number,
+                language: "uk-UA",
+            }).catch(() => null)
+        )
+    );
+
     const allVideos = [
         ...(tv.videos?.results ?? []),
         ...(ukVideos.results ?? []),
@@ -39,10 +54,12 @@ export default async function TvPage({ params }: TvPageProps) {
 
     const trailer = getBestTvTrailer(allVideos);
 
-    const cast = tv.credits?.cast.slice(0, 18) ?? [];
-    const crew = tv.credits?.crew.slice(0, 12) ?? [];
+    const cast = tv.aggregate_credits?.cast.slice(0, 18) ?? [];
+    const crew = tv.aggregate_credits?.crew.slice(0, 12) ?? [];
     const similarTv = tv.similar?.results.slice(0, 12) ?? [];
     const recommendations = tv.recommendations?.results.slice(0, 12) ?? [];
+    const reviews = tv.reviews?.results ?? [];
+    const validSeasonDetails = seasonDetails.filter((season) => season !== null);
 
     return (
         <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
@@ -54,7 +71,11 @@ export default async function TvPage({ params }: TvPageProps) {
                 <TvHero tv={tv} trailer={trailer} />
             </div>
 
-            <TvInfoSection tv={tv} />
+            <TvAdvancedInfoSection tv={tv} />
+
+            <TvExternalSection tv={tv} />
+
+            <TvMetaSections tv={tv} />
 
             <TvTrailerSection trailer={trailer} />
 
@@ -63,6 +84,10 @@ export default async function TvPage({ params }: TvPageProps) {
             <TvCrewSection crew={crew} />
 
             <TvSeasonsSection seasons={tv.seasons} />
+
+            <TvEpisodesSection seasons={validSeasonDetails} />
+
+            <TvReviewsSection reviews={reviews} />
 
             <TvRelatedSection
                 title="Схожі серіали"

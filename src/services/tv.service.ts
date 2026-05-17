@@ -1,12 +1,13 @@
 import { tmdbFetch } from "@/src/services/tmdbClient";
 import type {
-    TvCreditsResponse,
+    TvAggregateCreditsResponse,
     TvDetails,
     TvDetailsWithAppend,
     TvGenresResponse,
     TvImagesResponse,
     TvListItem,
     TvListResponse,
+    TvSeasonDetails,
     TvVideosResponse,
 } from "@/src/types/tv.types";
 
@@ -131,7 +132,7 @@ const getTvDetailsWithAppend = (
     const params = new URLSearchParams({
         language,
         append_to_response:
-            "aggregate_credits,credits,videos,images,similar,recommendations",
+            "aggregate_credits,videos,images,similar,recommendations,external_ids,content_ratings,watch/providers,keywords,reviews,alternative_titles,translations",
     });
 
     return tmdbFetch<TvDetailsWithAppend>(
@@ -140,16 +141,16 @@ const getTvDetailsWithAppend = (
     );
 };
 
-const getTvCredits = (
+const getTvAggregateCredits = (
     tvId: number | string,
     language = "uk-UA"
-): Promise<TvCreditsResponse> => {
+): Promise<TvAggregateCreditsResponse> => {
     const params = new URLSearchParams({
         language,
     });
 
-    return tmdbFetch<TvCreditsResponse>(
-        `/tv/${tvId}/credits?${params.toString()}`,
+    return tmdbFetch<TvAggregateCreditsResponse>(
+        `/tv/${tvId}/aggregate_credits?${params.toString()}`,
         { revalidate: 86400 }
     );
 };
@@ -173,6 +174,25 @@ const getTvImages = (
 ): Promise<TvImagesResponse> => {
     return tmdbFetch<TvImagesResponse>(
         `/tv/${tvId}/images`,
+        { revalidate: 86400 }
+    );
+};
+
+const getTvSeasonDetails = ({
+                                tvId,
+                                seasonNumber,
+                                language = "uk-UA",
+                            }: {
+    tvId: number | string;
+    seasonNumber: number | string;
+    language?: string;
+}): Promise<TvSeasonDetails> => {
+    const params = new URLSearchParams({
+        language,
+    });
+
+    return tmdbFetch<TvSeasonDetails>(
+        `/tv/${tvId}/season/${seasonNumber}?${params.toString()}`,
         { revalidate: 86400 }
     );
 };
@@ -238,9 +258,10 @@ export {
     discoverTv,
     getTvDetails,
     getTvDetailsWithAppend,
-    getTvCredits,
+    getTvAggregateCredits,
     getTvVideos,
     getTvImages,
+    getTvSeasonDetails,
     getSimilarTv,
     getTvRecommendations,
     getTvGenres,

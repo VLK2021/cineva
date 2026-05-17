@@ -5,3 +5,8 @@ export * from './TvCrewSection';
 export * from './TvSeasonsSection';
 export * from './TvRelatedSection';
 export * from './TvCastSection';
+export * from './TvAdvancedInfoSection';
+export * from './TvExternalSection';
+export * from './TvEpisodesSection';
+export * from './TvMetaSections';
+export * from './TvReviewsSection';
