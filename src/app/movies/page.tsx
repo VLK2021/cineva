@@ -37,8 +37,8 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
     return (
         <main className="min-h-screen bg-[var(--color-background)] px-4 py-10 text-[var(--color-text)] sm:px-6 lg:px-10">
             <MoviesPageHeader
-                totalResults={movies.total_results}
-                page={movies.page}
+                sort={params.sort}
+                year={params.year}
             />
 
             <MoviesGrid movies={movies.results} />
