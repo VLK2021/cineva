@@ -33,6 +33,7 @@ const TvHero = ({tv, trailer}: TvHeroProps) => {
                     alt={tv.name}
                     fill
                     priority
+                    sizes="100vw"
                     className="object-cover"
                 />
             )}

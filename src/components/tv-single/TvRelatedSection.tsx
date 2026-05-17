@@ -36,6 +36,7 @@ const TvRelatedSection = ({ title, tvShows }: TvRelatedSectionProps) => {
                                     src={`${IMAGE_BASE_URL}/w500${tv.poster_path}`}
                                     alt={tv.name}
                                     fill
+                                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1280px) 25vw, 16vw"
                                     className="object-cover transition duration-500 group-hover:scale-105"
                                 />
                             ) : (

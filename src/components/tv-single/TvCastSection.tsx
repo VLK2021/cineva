@@ -34,6 +34,7 @@ const TvCastSection = ({ cast }: TvCastSectionProps) => {
                                         src={`${IMAGE_BASE_URL}/w300${actor.profile_path}`}
                                         alt={actor.name}
                                         fill
+                                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
                                         className="object-cover"
                                     />
                                 ) : (

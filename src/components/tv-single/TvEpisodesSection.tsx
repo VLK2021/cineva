@@ -83,6 +83,7 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                                             src={`${IMAGE_BASE_URL}/w500${episode.still_path}`}
                                                             alt={episode.name}
                                                             fill
+                                                            sizes="(max-width: 768px) 100vw, 220px"
                                                             className="object-cover"
                                                         />
                                                     ) : (
