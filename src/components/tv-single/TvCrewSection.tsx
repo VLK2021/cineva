@@ -1,8 +1,8 @@
 import { Clapperboard } from "lucide-react";
-import type { TvCrewMember } from "@/src/types/tv.types";
+import type { TvAggregateCrewMember } from "@/src/types/tv.types";
 
 type TvCrewSectionProps = {
-    crew: TvCrewMember[];
+    crew: TvAggregateCrewMember[];
 };
 
 const TvCrewSection = ({ crew }: TvCrewSectionProps) => {
@@ -16,17 +16,26 @@ const TvCrewSection = ({ crew }: TvCrewSectionProps) => {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {crew.map((member) => (
-                    <div
-                        key={member.credit_id}
-                        className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 shadow-sm"
-                    >
-                        <p className="font-black">{member.name}</p>
-                        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                            {member.job} · {member.department}
-                        </p>
-                    </div>
-                ))}
+                {crew.map((member) => {
+                    const mainJob = member.jobs?.[0];
+
+                    return (
+                        <div
+                            key={`${member.id}-${mainJob?.credit_id ?? mainJob?.job ?? member.department}`}
+                            className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 shadow-sm"
+                        >
+                            <p className="font-black">{member.name}</p>
+
+                            <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                                {mainJob?.job || "—"} · {member.department || "—"}
+                            </p>
+
+                            <p className="mt-2 text-xs font-bold text-[var(--color-brand)]">
+                                {member.total_episode_count} серій
+                            </p>
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );
