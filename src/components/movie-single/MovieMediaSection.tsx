@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Film, Video } from "lucide-react";
 import type { MovieVideo } from "@/src/types";
 
@@ -12,11 +12,9 @@ type MovieMediaSectionProps = {
 
 const KINOBD_SCRIPT_SRC = "https://kinobd.net/js/player_.js";
 
-const MovieMediaSection = ({
-                               trailer,
-                               kinopoiskId,
-                               movieTitle,
-                           }: MovieMediaSectionProps) => {
+const MovieMediaSection = ({ trailer, kinopoiskId, movieTitle }: MovieMediaSectionProps) => {
+    const kinoBdRootRef = useRef<HTMLDivElement | null>(null);
+
     const [activeTab, setActiveTab] = useState<"trailer" | "movie">(
         trailer ? "trailer" : "movie"
     );
@@ -29,22 +27,41 @@ const MovieMediaSection = ({
         return movieTitle.trim();
     }, [movieTitle]);
 
+    const playerKey = `${preparedKinopoiskId}-${preparedTitle}`;
+
     useEffect(() => {
         if (activeTab !== "movie") return;
+        if (!kinoBdRootRef.current) return;
         if (!preparedKinopoiskId && !preparedTitle) return;
 
-        const oldScript = document.querySelector(
-            `script[src="${KINOBD_SCRIPT_SRC}"]`
-        );
+        const root = kinoBdRootRef.current;
 
-        oldScript?.remove();
+        root.replaceChildren();
+
+        const playerDiv = document.createElement("div");
+        playerDiv.id = "kinobd";
+        playerDiv.className = "h-full w-full";
+
+        if (preparedKinopoiskId) {
+            playerDiv.dataset.kinopoisk = preparedKinopoiskId;
+        }
+
+        if (preparedTitle) {
+            playerDiv.dataset.title = preparedTitle;
+        }
 
         const script = document.createElement("script");
         script.src = KINOBD_SCRIPT_SRC;
         script.async = true;
 
-        document.body.appendChild(script);
-    }, [activeTab, preparedKinopoiskId, preparedTitle]);
+        root.appendChild(playerDiv);
+        root.appendChild(script);
+
+        return () => {
+            script.remove();
+            root.replaceChildren();
+        };
+    }, [activeTab, playerKey, preparedKinopoiskId, preparedTitle]);
 
     if (!trailer && !preparedKinopoiskId && !preparedTitle) return null;
 
@@ -104,10 +121,7 @@ const MovieMediaSection = ({
 
                     {activeTab === "movie" && (
                         <div
-                            key={`kinobd-${preparedKinopoiskId}-${preparedTitle}`}
-                            id="kinobd"
-                            data-kinopoisk={preparedKinopoiskId}
-                            data-title={preparedTitle}
+                            ref={kinoBdRootRef}
                             className="h-full w-full"
                         />
                     )}
