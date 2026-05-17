@@ -8,7 +8,7 @@ import {
     MovieRelatedSection,
 } from "@/src/components/movie-single";
 import { getBestTrailer } from "@/src/helpers/movieVideo.helpers";
-import { buildKinoBdTitleCandidates } from "@/src/helpers/kinoBd.helpers";
+import {BackButton} from "@/src/components/common";
 
 type MoviePageProps = {
     params: Promise<{
@@ -36,12 +36,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
     const trailer = getBestTrailer(allVideos);
 
-    // const movieTitles = buildKinoBdTitleCandidates({
-    //     ruTitle: ruMovie.title,
-    //     ukTitle: movie.title,
-    //     originalTitle: movie.original_title,
-    // });
-
     const cast = movie.credits?.cast.slice(0, 18) ?? [];
     const crew = movie.credits?.crew.slice(0, 12) ?? [];
     const similarMovies = movie.similar?.results.slice(0, 8) ?? [];
@@ -49,7 +43,13 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
     return (
         <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
-            <MovieHero movie={movie} trailer={trailer} />
+            <div className="relative">
+                <div className="absolute left-4 top-4 z-20 sm:left-6 lg:left-10">
+                    <BackButton fallbackHref="/movies" />
+                </div>
+
+                <MovieHero movie={movie} trailer={trailer} />
+            </div>
 
             <MovieInfoSection movie={movie} />
 
