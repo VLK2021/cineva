@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Calendar, Clock, Film, Star } from "lucide-react";
 import type { MovieDetailsWithAppend, MovieVideo } from "@/src/types";
 import { formatRuntime, getYear, IMAGE_BASE_URL } from "./movieSingle.helpers";
-import {BackButton} from "@/src/components/common";
 
 type MovieHeroProps = {
     movie: MovieDetailsWithAppend;
