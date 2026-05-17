@@ -137,7 +137,9 @@ const getTvDetailsWithAppend = (
 
     return tmdbFetch<TvDetailsWithAppend>(
         `/tv/${tvId}?${params.toString()}`,
-        { revalidate: 86400 }
+        {
+            cache: "no-store",
+        }
     );
 };
 
