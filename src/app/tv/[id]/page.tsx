@@ -79,7 +79,7 @@ export default async function TvPage({ params }: TvPageProps) {
 
             <TvMediaSection
                 trailer={trailer}
-                imdbId={tv.external_ids?.imdb_id}
+                kinopoiskId={tv.external_ids?.imdb_id}
                 tvTitle={tv.name || tv.original_name}
             />
 

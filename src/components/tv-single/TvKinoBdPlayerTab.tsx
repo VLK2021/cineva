@@ -3,18 +3,21 @@
 import { useEffect, useMemo, useRef } from "react";
 
 type TvKinoBdPlayerTabProps = {
-    imdbId?: string | null;
+    kinopoiskId?: string | null;
     tvTitle: string;
 };
 
 const KINOBD_SCRIPT_SRC = "https://kinobd.net/js/player_.js";
 
-const TvKinoBdPlayerTab = ({ imdbId, tvTitle }: TvKinoBdPlayerTabProps) => {
+const TvKinoBdPlayerTab = ({
+                               kinopoiskId,
+                               tvTitle,
+                           }: TvKinoBdPlayerTabProps) => {
     const rootRef = useRef<HTMLDivElement | null>(null);
 
-    const preparedImdbId = useMemo(() => {
-        return imdbId?.replace(/^tt/i, "").trim() || "";
-    }, [imdbId]);
+    const preparedKinopoiskId = useMemo(() => {
+        return kinopoiskId?.replace(/^tt/i, "").trim() || "";
+    }, [kinopoiskId]);
 
     const preparedTitle = useMemo(() => {
         return tvTitle.trim();
@@ -22,7 +25,7 @@ const TvKinoBdPlayerTab = ({ imdbId, tvTitle }: TvKinoBdPlayerTabProps) => {
 
     useEffect(() => {
         if (!rootRef.current) return;
-        if (!preparedImdbId && !preparedTitle) return;
+        if (!preparedKinopoiskId && !preparedTitle) return;
 
         const root = rootRef.current;
 
@@ -32,8 +35,8 @@ const TvKinoBdPlayerTab = ({ imdbId, tvTitle }: TvKinoBdPlayerTabProps) => {
         playerDiv.id = "kinobd";
         playerDiv.className = "h-full w-full";
 
-        if (preparedImdbId) {
-            playerDiv.setAttribute("data-kinopoisk", preparedImdbId);
+        if (preparedKinopoiskId) {
+            playerDiv.setAttribute("data-kinopoisk", preparedKinopoiskId);
         }
 
         if (preparedTitle) {
@@ -50,7 +53,7 @@ const TvKinoBdPlayerTab = ({ imdbId, tvTitle }: TvKinoBdPlayerTabProps) => {
         return () => {
             root.innerHTML = "";
         };
-    }, [preparedImdbId, preparedTitle]);
+    }, [preparedKinopoiskId, preparedTitle]);
 
     return <div ref={rootRef} className="h-full w-full" />;
 };

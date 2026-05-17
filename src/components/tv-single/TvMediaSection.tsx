@@ -8,7 +8,7 @@ import { TvKinoBdPlayerTab } from "@/src/components/tv-single/TvKinoBdPlayerTab"
 
 type TvMediaSectionProps = {
     trailer?: TvVideo;
-    imdbId?: string | null;
+    kinopoiskId?: string | null;
     tvTitle: string;
 };
 
@@ -19,7 +19,11 @@ type MediaTab = {
     content: ReactNode;
 };
 
-const TvMediaSection = ({ trailer, imdbId, tvTitle }: TvMediaSectionProps) => {
+const TvMediaSection = ({
+                            trailer,
+                            kinopoiskId,
+                            tvTitle,
+                        }: TvMediaSectionProps) => {
     const tabs = useMemo<MediaTab[]>(() => {
         return [
             ...(trailer
@@ -39,13 +43,13 @@ const TvMediaSection = ({ trailer, imdbId, tvTitle }: TvMediaSectionProps) => {
                 icon: <Film className="h-4 w-4" />,
                 content: (
                     <TvKinoBdPlayerTab
-                        imdbId={imdbId}
+                        kinopoiskId={kinopoiskId}
                         tvTitle={tvTitle}
                     />
                 ),
             },
         ];
-    }, [trailer, imdbId, tvTitle]);
+    }, [trailer, kinopoiskId, tvTitle]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 
