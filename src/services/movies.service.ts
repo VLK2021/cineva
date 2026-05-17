@@ -241,6 +241,20 @@ const getMovieGenres = (
     );
 };
 
+
+const getTvGenres = (
+    language = "uk-UA"
+): Promise<MovieGenresResponse> => {
+    const params = new URLSearchParams({
+        language,
+    });
+
+    return tmdbFetch<MovieGenresResponse>(
+        `/genre/tv/list?${params.toString()}`,
+        { revalidate: 86400 }
+    );
+};
+
 export {
     getPopularMovies,
     getNowPlayingMovies,
@@ -255,4 +269,5 @@ export {
     getSimilarMovies,
     getMovieRecommendations,
     getMovieGenres,
+    getTvGenres
 };
