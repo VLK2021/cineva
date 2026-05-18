@@ -1,6 +1,6 @@
-import { searchMulti } from "@/src/services";
-import { SearchResultItem } from "@/src/components/search/SearchResultItem";
 import { Pagination } from "@/src/components/common/Pagination";
+import { SearchResultsGrid } from "@/src/components/search";
+import { searchMulti } from "@/src/services";
 
 type SearchPageProps = {
     searchParams: Promise<{
@@ -54,29 +54,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 </p>
             </div>
 
-            {query.length < 2 && (
+            {query.length < 2 ? (
                 <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-8 text-center text-[var(--color-text-muted)]">
                     Для пошуку потрібно мінімум 2 символи.
                 </div>
-            )}
-
-            {query.length >= 2 && !results.length && (
-                <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-8 text-center text-[var(--color-text-muted)]">
-                    Нічого не знайдено.
-                </div>
-            )}
-
-            {results.length > 0 && (
-                <div className="grid gap-3">
-                    {results.map((item) => (
-                        <div
-                            key={`${item.media_type}-${item.id}`}
-                            className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-2 shadow-sm"
-                        >
-                            <SearchResultItem item={item} />
-                        </div>
-                    ))}
-                </div>
+            ) : (
+                <SearchResultsGrid results={results} />
             )}
 
             {data && data.total_pages > 1 && (
