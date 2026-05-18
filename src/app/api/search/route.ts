@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { searchMulti } from "@/src/services";
+import { searchMultiLanguages } from "@/src/services";
 
 const MIN_QUERY_LENGTH = 2;
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const data = await searchMulti({
+        const data = await searchMultiLanguages({
             query,
             page: Number.isFinite(page) && page > 0 ? page : 1,
         });

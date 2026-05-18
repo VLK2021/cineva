@@ -1,6 +1,6 @@
 import { Pagination } from "@/src/components/common/Pagination";
 import { SearchResultsGrid } from "@/src/components/search";
-import { searchMulti } from "@/src/services";
+import { searchMultiLanguages } from "@/src/services";
 
 type SearchPageProps = {
     searchParams: Promise<{
@@ -25,7 +25,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
     const data =
         query.length >= 2
-            ? await searchMulti({
+            ? await searchMultiLanguages({
                 query,
                 page,
             })
