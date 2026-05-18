@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Users } from "lucide-react";
 import type { TvAggregateCastMember } from "@/src/types/tv.types";
+import Link from "next/link";
 
 type TvCastSectionProps = {
     cast: TvAggregateCastMember[];
@@ -28,6 +29,11 @@ const TvCastSection = ({ cast }: TvCastSectionProps) => {
                             key={`${actor.id}-${role?.credit_id ?? actor.total_episode_count}`}
                             className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-sm"
                         >
+                            <Link
+                                key={actor.id}
+                                href={`/actors/${actor.id}`}
+                                className="group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                            >
                             <div className="relative aspect-[2/3] bg-[var(--color-border)]">
                                 {actor.profile_path ? (
                                     <Image
@@ -43,6 +49,7 @@ const TvCastSection = ({ cast }: TvCastSectionProps) => {
                                     </div>
                                 )}
                             </div>
+                            </Link>
 
                             <div className="p-3">
                                 <p className="line-clamp-1 text-sm font-black">
