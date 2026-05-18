@@ -45,31 +45,31 @@ const TvMediaSection = ({
                 ]
                 : []),
 
-            {
-                id: "kinobd",
-                title: "Дивитися серіал",
-                icon: <Film className="h-4 w-4" />,
-                content: (
-                    <TvKinoBdPlayerTab
-                        imdbId={imdbId}
-                        tvTitle={tvTitle}
-                    />
-                ),
-            },
+            // {
+            //     id: "kinobd",
+            //     title: "Дивитися серіал",
+            //     icon: <Film className="h-4 w-4" />,
+            //     content: (
+            //         <TvKinoBdPlayerTab
+            //             imdbId={imdbId}
+            //             tvTitle={tvTitle}
+            //         />
+            //     ),
+            // },
 
-            {
-                id: "watchn",
-                title: "Watch EN",
-                icon: <Globe2 className="h-4 w-4" />,
-                content: (
-                    <TabWatchN
-                        tmdbId={tmdbId}
-                        title={tvTitle}
-                        posterPath={posterPath}
-                        seasons={seasons}
-                    />
-                ),
-            },
+            // {
+            //     id: "watchn",
+            //     title: "Watch EN",
+            //     icon: <Globe2 className="h-4 w-4" />,
+            //     content: (
+            //         <TabWatchN
+            //             tmdbId={tmdbId}
+            //             title={tvTitle}
+            //             posterPath={posterPath}
+            //             seasons={seasons}
+            //         />
+            //     ),
+            // },
 
             {
                 id: "watchn1",
