@@ -2,10 +2,11 @@
 
 import { ReactNode, useMemo, useState } from "react";
 import { Film, Globe2, Video } from "lucide-react";
-import type {TvSeasonDetails, TvVideo} from "@/src/types/tv.types";
+import type { TvSeasonDetails, TvVideo } from "@/src/types/tv.types";
 import { TvTrailerPlayerTab } from "@/src/components/tv-single/TvTrailerPlayerTab";
 import { TvKinoBdPlayerTab } from "@/src/components/tv-single/TvKinoBdPlayerTab";
 import { TabWatchN } from "@/src/components/tv-single/TabWatchN";
+import { TvTabWatchN1 } from "@/src/components/tv-single/TvTabWatchN1";
 
 type TvMediaSectionProps = {
     trailer?: TvVideo;
@@ -29,7 +30,7 @@ const TvMediaSection = ({
                             tvTitle,
                             tmdbId,
                             posterPath,
-                            seasons
+                            seasons,
                         }: TvMediaSectionProps) => {
     const tabs = useMemo<MediaTab[]>(() => {
         return [
@@ -65,6 +66,19 @@ const TvMediaSection = ({
                         tmdbId={tmdbId}
                         title={tvTitle}
                         posterPath={posterPath}
+                        seasons={seasons}
+                    />
+                ),
+            },
+
+            {
+                id: "watchn1",
+                title: "Watch N1",
+                icon: <Globe2 className="h-4 w-4" />,
+                content: (
+                    <TvTabWatchN1
+                        tmdbId={tmdbId}
+                        title={tvTitle}
                         seasons={seasons}
                     />
                 ),

@@ -12,3 +12,4 @@ export * from './TvReviewsSection';
 export * from './TvKinoBdPlayerTab';
 export * from './TvMediaSection';
 export * from './TabWatchN';
+export * from './TvTabWatchN1';
