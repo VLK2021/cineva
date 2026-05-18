@@ -7,3 +7,4 @@ export { MovieRelatedSection } from "./MovieRelatedSection";
 export * from './TrailerPlayerTab';
 export * from './KinoBdPlayerTab';
 export * from './TabWatchN';
+export * from './TabWatchN1';
