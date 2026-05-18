@@ -1,128 +1,180 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "@/src/hooks/useDebounce";
+import { SearchResultItem } from "@/src/components/search/SearchResultItem";
+import type { SearchMultiResponse } from "@/src/types/search.types";
 
-type SearchFormData = {
-    query: string;
-};
-
-type HeaderSearchProps = {
-    onSearch?: () => void;
-    autoFocus?: boolean;
-};
-
-const HeaderSearch = ({ onSearch, autoFocus = false }: HeaderSearchProps) => {
+const HeaderSearch = () => {
     const router = useRouter();
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-    const {
-        register,
-        watch,
-        resetField,
-        handleSubmit,
-    } = useForm<SearchFormData>({
-        defaultValues: {
-            query: "",
-        },
-    });
+    const [query, setQuery] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState<SearchMultiResponse | null>(null);
 
-    const query = watch("query");
+    const debouncedQuery = useDebounce(query, 500);
+    const trimmedQuery = query.trim();
 
-    const onSubmit = (data: SearchFormData) => {
-        const trimmedQuery = data.query.trim();
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                wrapperRef.current &&
+                !wrapperRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
 
-        if (!trimmedQuery) return;
+        document.addEventListener("mousedown", handleClickOutside);
 
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        const searchValue = debouncedQuery.trim();
+
+        if (searchValue.length < 2) {
+            setData(null);
+            setIsLoading(false);
+            return;
+        }
+
+        const controller = new AbortController();
+
+        const fetchSearch = async () => {
+            setIsLoading(true);
+
+            try {
+                const response = await fetch(
+                    `/api/search?query=${encodeURIComponent(searchValue)}`,
+                    { signal: controller.signal }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Search failed");
+                }
+
+                const result: SearchMultiResponse = await response.json();
+
+                setData({
+                    ...result,
+                    results: result.results
+                        .filter((item) =>
+                            ["movie", "tv", "person"].includes(item.media_type)
+                        )
+                        .slice(0, 8),
+                });
+
+                setIsOpen(true);
+            } catch (error) {
+                if ((error as Error).name !== "AbortError") {
+                    setData(null);
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchSearch();
+
+        return () => controller.abort();
+    }, [debouncedQuery]);
+
+    const submitSearch = () => {
+        if (trimmedQuery.length < 2) return;
+
+        setIsOpen(false);
         router.push(`/search?query=${encodeURIComponent(trimmedQuery)}`);
-        onSearch?.();
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-            <div
-                className="
-                    group
-                    relative
-                    flex
-                    h-10
-                    items-center
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-[var(--color-border)]
-                    bg-[var(--color-card)]
-                    shadow-sm
-                    transition-all
-                    duration-300
-                    focus-within:border-[var(--color-brand)]
-                    focus-within:shadow-md
-                    sm:h-11
-                "
+        <div ref={wrapperRef} className="relative w-full">
+            <form
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    submitSearch();
+                }}
+                className="relative"
             >
-                <div
-                    className="
-                        pointer-events-none
-                        absolute
-                        left-4
-                        flex
-                        items-center
-                        justify-center
-                        text-[var(--color-text-muted)]
-                        transition-colors
-                        duration-300
-                        group-focus-within:text-[var(--color-brand)]
-                    "
-                >
-                    <Search className="h-4 w-4" />
-                </div>
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-muted)]" />
 
                 <input
-                    type="text"
+                    value={query}
+                    onChange={(event) => {
+                        setQuery(event.target.value);
+                        setIsOpen(true);
+                    }}
+                    onFocus={() => {
+                        if (query.trim().length >= 2) {
+                            setIsOpen(true);
+                        }
+                    }}
+                    onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                            setIsOpen(false);
+                        }
+                    }}
                     placeholder="Пошук фільмів, серіалів, акторів..."
-                    autoComplete="off"
-                    autoFocus={autoFocus}
-                    {...register("query")}
-                    className="
-                        h-full
-                        w-full
-                        bg-transparent
-                        pl-11
-                        pr-11
-                        text-sm
-                        text-[var(--color-text)]
-                        outline-none
-                        placeholder:text-[var(--color-text-muted)]
-                    "
+                    className="h-11 w-full rounded-full border border-[var(--color-border)] bg-[var(--color-background)] pl-11 pr-11 text-sm font-semibold text-[var(--color-text)] outline-none transition focus:border-[var(--color-brand)]"
                 />
 
                 {query && (
                     <button
                         type="button"
-                        onClick={() => resetField("query")}
-                        aria-label="Clear search"
-                        className="
-                            absolute
-                            right-3
-                            flex
-                            h-7
-                            w-7
-                            items-center
-                            justify-center
-                            rounded-full
-                            text-[var(--color-text-muted)]
-                            transition-all
-                            duration-200
-                            hover:bg-[var(--color-brand)]
-                            hover:text-white
-                            active:scale-95
-                        "
+                        onClick={() => {
+                            setQuery("");
+                            setData(null);
+                            setIsOpen(false);
+                        }}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
                     >
                         <X className="h-4 w-4" />
                     </button>
                 )}
-            </div>
-        </form>
+            </form>
+
+            {isOpen && trimmedQuery.length >= 2 && (
+                <div className="absolute right-0 top-full z-50 mt-3 w-[420px] overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-3 shadow-2xl">
+                    {isLoading && (
+                        <div className="p-4 text-sm font-semibold text-[var(--color-text-muted)]">
+                            Шукаю...
+                        </div>
+                    )}
+
+                    {!isLoading && data && data.results.length > 0 && (
+                        <>
+                            <div className="max-h-[440px] overflow-y-auto">
+                                {data.results.map((item) => (
+                                    <SearchResultItem
+                                        key={`${item.media_type}-${item.id}`}
+                                        item={item}
+                                        onClick={() => setIsOpen(false)}
+                                    />
+                                ))}
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={submitSearch}
+                                className="mt-3 w-full rounded-2xl bg-[var(--color-brand)] px-4 py-3 text-sm font-black text-white transition hover:opacity-90"
+                            >
+                                Показати всі результати
+                            </button>
+                        </>
+                    )}
+
+                    {!isLoading && data && data.results.length === 0 && (
+                        <div className="p-4 text-sm font-semibold text-[var(--color-text-muted)]">
+                            Нічого не знайдено.
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
     );
 };
 

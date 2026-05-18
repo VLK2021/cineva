@@ -1,24 +1,30 @@
-import { tmdbFetch } from "./tmdbClient";
+import { tmdbFetch } from "@/src/services/tmdbClient";
+import type { SearchMultiResponse } from "@/src/types/search.types";
 
 type SearchMultiParams = {
     query: string;
-    page?: string;
+    page?: number;
     language?: string;
 };
 
-export const searchMulti = async ({
-                                      query,
-                                      page = "1",
-                                      language = "uk-UA",
-                                  }: SearchMultiParams) => {
+const searchMulti = ({
+                         query,
+                         page = 1,
+                         language = "uk-UA",
+                     }: SearchMultiParams): Promise<SearchMultiResponse> => {
     const params = new URLSearchParams({
         query,
-        page,
+        page: String(page),
         language,
         include_adult: "false",
     });
 
-    return tmdbFetch(`/search/multi?${params.toString()}`, {
-        cache: "no-store",
-    });
+    return tmdbFetch<SearchMultiResponse>(
+        `/search/multi?${params.toString()}`,
+        {
+            revalidate: 300,
+        }
+    );
 };
+
+export { searchMulti };
