@@ -1,15 +1,18 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-import { Film, Video } from "lucide-react";
+import { Film, Globe2, Video } from "lucide-react";
 import type { MovieVideo } from "@/src/types";
 import { TrailerPlayerTab } from "@/src/components/movie-single/TrailerPlayerTab";
 import { KinoBdPlayerTab } from "@/src/components/movie-single/KinoBdPlayerTab";
+import { TabWatchN } from "@/src/components/movie-single/TabWatchN";
 
 type MovieMediaSectionProps = {
     trailer?: MovieVideo;
     kinopoiskId?: string | null;
     movieTitle: string;
+    tmdbId: number | string;
+    posterPath?: string | null;
 };
 
 type MediaTab = {
@@ -23,10 +26,11 @@ const MovieMediaSection = ({
                                trailer,
                                kinopoiskId,
                                movieTitle,
+                               tmdbId,
+                               posterPath,
                            }: MovieMediaSectionProps) => {
     const tabs = useMemo<MediaTab[]>(() => {
         return [
-            // Закоментував цей обʼєкт — таб трейлера повністю зник
             ...(trailer
                 ? [
                     {
@@ -38,7 +42,6 @@ const MovieMediaSection = ({
                 ]
                 : []),
 
-            // Закоментував цей обʼєкт — таб KinoBD повністю зник
             {
                 id: "kinobd",
                 title: "Дивитися фільм",
@@ -51,15 +54,20 @@ const MovieMediaSection = ({
                 ),
             },
 
-            ///Сюди потім додаєш інші незалежні плеєри:
-            // {
-            //     id: "english",
-            //     title: "Watch EN",
-            //     icon: <Film className="h-4 w-4" />,
-            //     content: <EnglishPlayerTab imdbId={imdbId} />,
-            // },
+            {
+                id: "watchn",
+                title: "Watch EN",
+                icon: <Globe2 className="h-4 w-4" />,
+                content: (
+                    <TabWatchN
+                        tmdbId={tmdbId}
+                        title={movieTitle}
+                        posterPath={posterPath}
+                    />
+                ),
+            },
         ];
-    }, [trailer, kinopoiskId, movieTitle]);
+    }, [trailer, kinopoiskId, movieTitle, tmdbId, posterPath]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 

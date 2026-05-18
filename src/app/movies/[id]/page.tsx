@@ -57,6 +57,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
                 trailer={trailer}
                 kinopoiskId={movie.imdb_id}
                 movieTitle={ruMovie.title || movie.title || movie.original_title}
+                tmdbId={movie.id}
+                posterPath={movie.poster_path}
             />
 
             <MovieCastSection cast={cast} />
