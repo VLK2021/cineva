@@ -7,14 +7,17 @@ import {
     getPopularTv,
     getTopRatedTv,
 } from "@/src/services";
+import { HomeActorsSection } from "@/src/components/home/HomeActorsSection";
+import { getPopularActors } from "@/src/services";
 
 export default async function Home() {
-    const [popularMovies, topRatedMovies, popularTv, topRatedTv] =
+    const [popularMovies, topRatedMovies, popularTv, topRatedTv, popularActors] =
         await Promise.all([
             getPopularMovies(),
             getTopRatedMovies(),
             getPopularTv(),
             getTopRatedTv(),
+            getPopularActors(),
         ]);
 
     return (
@@ -41,6 +44,11 @@ export default async function Home() {
                 title="Топ рейтинг серіалів"
                 tvShows={topRatedTv.results}
                 href="/tv?sort=vote_average.desc"
+            />
+
+            <HomeActorsSection
+                title="Популярні актори"
+                actors={popularActors.results}
             />
         </main>
     );
