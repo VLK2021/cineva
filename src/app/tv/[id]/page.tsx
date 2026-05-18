@@ -81,6 +81,9 @@ export default async function TvPage({ params }: TvPageProps) {
                 trailer={trailer}
                 kinopoiskId={tv.external_ids?.imdb_id}
                 tvTitle={tv.name || tv.original_name}
+                tmdbId={tv.id}
+                posterPath={tv.poster_path}
+                seasons={validSeasonDetails}
             />
 
             <TvCastSection cast={cast} />

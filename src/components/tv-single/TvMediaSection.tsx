@@ -1,15 +1,19 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-import { Film, Video } from "lucide-react";
-import type { TvVideo } from "@/src/types/tv.types";
+import { Film, Globe2, Video } from "lucide-react";
+import type {TvSeasonDetails, TvVideo} from "@/src/types/tv.types";
 import { TvTrailerPlayerTab } from "@/src/components/tv-single/TvTrailerPlayerTab";
 import { TvKinoBdPlayerTab } from "@/src/components/tv-single/TvKinoBdPlayerTab";
+import { TabWatchN } from "@/src/components/tv-single/TabWatchN";
 
 type TvMediaSectionProps = {
     trailer?: TvVideo;
     kinopoiskId?: string | null;
     tvTitle: string;
+    tmdbId: number | string;
+    posterPath?: string | null;
+    seasons: TvSeasonDetails[];
 };
 
 type MediaTab = {
@@ -23,6 +27,9 @@ const TvMediaSection = ({
                             trailer,
                             kinopoiskId,
                             tvTitle,
+                            tmdbId,
+                            posterPath,
+                            seasons
                         }: TvMediaSectionProps) => {
     const tabs = useMemo<MediaTab[]>(() => {
         return [
@@ -48,8 +55,22 @@ const TvMediaSection = ({
                     />
                 ),
             },
+
+            {
+                id: "watchn",
+                title: "Watch EN",
+                icon: <Globe2 className="h-4 w-4" />,
+                content: (
+                    <TabWatchN
+                        tmdbId={tmdbId}
+                        title={tvTitle}
+                        posterPath={posterPath}
+                        seasons={seasons}
+                    />
+                ),
+            },
         ];
-    }, [trailer, kinopoiskId, tvTitle]);
+    }, [trailer, kinopoiskId, tvTitle, tmdbId, posterPath, seasons]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 
