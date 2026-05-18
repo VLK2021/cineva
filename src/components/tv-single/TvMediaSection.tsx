@@ -10,7 +10,7 @@ import { TvTabWatchN1 } from "@/src/components/tv-single/TvTabWatchN1";
 
 type TvMediaSectionProps = {
     trailer?: TvVideo;
-    kinopoiskId?: string | null;
+    imdbId?: string | null;
     tvTitle: string;
     tmdbId: number | string;
     posterPath?: string | null;
@@ -26,7 +26,7 @@ type MediaTab = {
 
 const TvMediaSection = ({
                             trailer,
-                            kinopoiskId,
+                            imdbId,
                             tvTitle,
                             tmdbId,
                             posterPath,
@@ -51,7 +51,7 @@ const TvMediaSection = ({
                 icon: <Film className="h-4 w-4" />,
                 content: (
                     <TvKinoBdPlayerTab
-                        kinopoiskId={kinopoiskId}
+                        imdbId={imdbId}
                         tvTitle={tvTitle}
                     />
                 ),
@@ -84,7 +84,7 @@ const TvMediaSection = ({
                 ),
             },
         ];
-    }, [trailer, kinopoiskId, tvTitle, tmdbId, posterPath, seasons]);
+    }, [trailer, imdbId, tvTitle, tmdbId, posterPath, seasons]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 
