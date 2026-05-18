@@ -1,12 +1,14 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-import { Film, Globe2, Video } from "lucide-react";
+import { Film, Globe2, Video, FlaskConical } from "lucide-react";
 import type { MovieVideo } from "@/src/types";
 import { TrailerPlayerTab } from "@/src/components/movie-single/TrailerPlayerTab";
 import { KinoBdPlayerTab } from "@/src/components/movie-single/KinoBdPlayerTab";
 import { TabWatchN } from "@/src/components/movie-single/TabWatchN";
 import { TabWatchN1 } from "@/src/components/movie-single/TabWatchN1";
+
+import { TabPlayersTest } from "@/src/components/movie-single/TabPlayersTest";
 
 type MovieMediaSectionProps = {
     trailer?: MovieVideo;
@@ -74,6 +76,18 @@ const MovieMediaSection = ({
                 icon: <Globe2 className="h-4 w-4" />,
                 content: (
                     <TabWatchN1
+                        tmdbId={tmdbId}
+                        title={movieTitle}
+                    />
+                ),
+            },
+
+            {
+                id: "players-test",
+                title: "Test Players",
+                icon: <FlaskConical className="h-4 w-4" />,
+                content: (
+                    <TabPlayersTest
                         tmdbId={tmdbId}
                         title={movieTitle}
                     />
