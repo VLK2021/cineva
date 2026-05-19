@@ -1,21 +1,32 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type ActorsFiltersBarProps = {
     sort?: string;
 };
 
-const sortOptions = [
-    { label: "Популярні", value: "popularity.desc" },
-    { label: "Менш популярні", value: "popularity.asc" },
-    { label: "Імʼя A-Z", value: "name.asc" },
-    { label: "Імʼя Z-A", value: "name.desc" },
-];
-
 const ActorsFiltersBar = ({ sort }: ActorsFiltersBarProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
+    const sortOptions = [
+        { label: t.popular, value: "popularity.desc" },
+        { label: t.lessPopular, value: "popularity.asc" },
+        { label: t.nameAZ, value: "name.asc" },
+        { label: t.nameZA, value: "name.desc" },
+    ];
+
     return (
         <form
             action="/actors"
-            className="mt-6 grid gap-3 rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 shadow-sm sm:grid-cols-[1fr_auto]"
+            className="
+                mt-6 grid gap-3 rounded-3xl border border-[var(--color-border)]
+                bg-[var(--color-card)] p-4 shadow-sm sm:grid-cols-[1fr_auto]
+            "
         >
             <select
                 name="sort"
@@ -34,14 +45,14 @@ const ActorsFiltersBar = ({ sort }: ActorsFiltersBarProps) => {
                     type="submit"
                     className="h-11 rounded-2xl bg-[var(--color-brand)] px-5 text-sm font-bold text-white transition hover:opacity-90 active:scale-95"
                 >
-                    Застосувати
+                    {t.apply}
                 </button>
 
                 <Link
                     href="/actors"
                     className="inline-flex h-11 items-center rounded-2xl border border-[var(--color-border)] px-5 text-sm font-bold text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
                 >
-                    Скинути
+                    {t.reset}
                 </Link>
             </div>
         </form>

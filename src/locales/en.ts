@@ -16,6 +16,9 @@ const en = {
     allYears: "All years",
     apply: "Apply",
     reset: "Reset",
+    lessPopular: "Less popular",
+    nameAZ: "Name A-Z",
+    nameZA: "Name Z-A",
 }
 
 export default en;

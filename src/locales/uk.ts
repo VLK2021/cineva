@@ -16,6 +16,9 @@ const uk = {
     allYears: "Усі роки",
     apply: "Застосувати",
     reset: "Скинути",
+    lessPopular: "Менш популярні",
+    nameAZ: "Імʼя A-Z",
+    nameZA: "Імʼя Z-A",
 }
 
 export default uk;
