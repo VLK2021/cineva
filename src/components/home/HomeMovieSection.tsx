@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import type { MovieListItem } from "@/src/types";
+import {useLanguage} from "@/src/context";
 
 type HomeMovieSectionProps = {
     title: string;

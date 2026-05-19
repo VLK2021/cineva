@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import {useLanguage} from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type HeroMovie = {
     id: number;
@@ -23,6 +26,9 @@ const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
 const HeroSlider = ({ movies }: HeroSliderProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     const filteredMovies = movies.filter((movie) => movie.backdrop_path);
 
@@ -160,7 +166,7 @@ const HeroSlider = ({ movies }: HeroSliderProps) => {
                                 active:scale-95
                             "
                         >
-                            Детальніше
+                            {t.details}
                         </Link>
 
                         <Link
@@ -182,7 +188,7 @@ const HeroSlider = ({ movies }: HeroSliderProps) => {
                                 active:scale-95
                             "
                         >
-                            Усі фільми
+                            {t.allFilms}
                         </Link>
                     </div>
                 </div>
