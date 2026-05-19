@@ -1,7 +1,10 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {ArrowLeft} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type BackButtonProps = {
     fallbackHref?: string;
@@ -10,9 +13,12 @@ type BackButtonProps = {
 
 const BackButton = ({
                         fallbackHref = "/movies",
-                        label = "Назад",
+                        label,
                     }: BackButtonProps) => {
     const router = useRouter();
+
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     const handleBack = () => {
         if (window.history.length > 1) {
@@ -48,10 +54,10 @@ const BackButton = ({
                 active:scale-95
             "
         >
-            <ArrowLeft className="h-4 w-4"/>
-            {label}
+            <ArrowLeft className="h-4 w-4" />
+            {label || t.back}
         </button>
     );
 };
 
-export {BackButton};
+export { BackButton };

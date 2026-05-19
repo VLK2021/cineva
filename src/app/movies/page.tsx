@@ -25,9 +25,6 @@ const getSafePage = (page?: string) => {
     return Math.floor(value);
 };
 
-// const getTmdbLanguage = (lang?: string) => {
-//     return lang === "en" ? "en-US" : "uk-UA";
-// };
 
 export default async function MoviesPage({
                                              searchParams,
@@ -37,9 +34,7 @@ export default async function MoviesPage({
     const cookieStore = await cookies();
 
     const lang = cookieStore.get("lang")?.value;
-
     const tmdbLanguage = getTmdbLanguage(lang);
-
     const page = getSafePage(params.page);
 
     const movies = await discoverMovies({

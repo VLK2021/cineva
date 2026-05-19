@@ -6,7 +6,8 @@ const uk = {
     allFilms: 'Усі фільми',
     viewAll: "Дивитися всі",
     searchPlaceholder: "Пошук фільмів, серіалів, акторів...",
-    noPhoto: "Немає фото"
+    noPhoto: "Немає фото",
+    back: "Назад",
 }
 
 export default uk;
