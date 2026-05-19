@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type MoviesFiltersBarProps = {
     genre?: string;
@@ -6,21 +11,24 @@ type MoviesFiltersBarProps = {
     year?: string;
 };
 
-const sortOptions = [
-    { label: "Популярні", value: "popularity.desc" },
-    { label: "Новіші", value: "primary_release_date.desc" },
-    { label: "Старіші", value: "primary_release_date.asc" },
-    { label: "Вищий рейтинг", value: "vote_average.desc" },
-    { label: "Більше голосів", value: "vote_count.desc" },
-];
-
-const currentYear = new Date().getFullYear();
-
-const yearOptions = Array.from({ length: 30 }, (_, index) =>
-    String(currentYear - index)
-);
-
 const MoviesFiltersBar = ({ genre, sort, year }: MoviesFiltersBarProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
+    const sortOptions = [
+        { label: t.popular, value: "popularity.desc" },
+        { label: t.newest, value: "primary_release_date.desc" },
+        { label: t.oldest, value: "primary_release_date.asc" },
+        { label: t.highestRating, value: "vote_average.desc" },
+        { label: t.mostVotes, value: "vote_count.desc" },
+    ];
+
+    const currentYear = new Date().getFullYear();
+
+    const yearOptions = Array.from({ length: 30 }, (_, index) =>
+        String(currentYear - index)
+    );
+
     return (
         <form
             action="/movies"
@@ -54,7 +62,7 @@ const MoviesFiltersBar = ({ genre, sort, year }: MoviesFiltersBarProps) => {
                 defaultValue={year ?? ""}
                 className="h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 text-sm font-semibold text-[var(--color-text)] outline-none"
             >
-                <option value="">Усі роки</option>
+                <option value="">{t.allYears}</option>
 
                 {yearOptions.map((yearOption) => (
                     <option key={yearOption} value={yearOption}>
@@ -68,14 +76,14 @@ const MoviesFiltersBar = ({ genre, sort, year }: MoviesFiltersBarProps) => {
                     type="submit"
                     className="h-11 rounded-2xl bg-[var(--color-brand)] px-5 text-sm font-bold text-white transition hover:opacity-90 active:scale-95"
                 >
-                    Застосувати
+                    {t.apply}
                 </button>
 
                 <Link
                     href={genre ? `/movies?genre=${genre}` : "/movies"}
                     className="inline-flex h-11 items-center rounded-2xl border border-[var(--color-border)] px-5 text-sm font-bold text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
                 >
-                    Скинути
+                    {t.reset}
                 </Link>
             </div>
         </form>
