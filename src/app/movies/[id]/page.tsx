@@ -1,4 +1,10 @@
-import { getMovieDetailsWithAppend, getMovieVideos, getMovieDetails } from "@/src/services";
+import { cookies } from "next/headers";
+
+import {
+    getMovieDetails,
+    getMovieDetailsWithAppend,
+    getMovieVideos,
+} from "@/src/services";
 import {
     MovieCastSection,
     MovieCrewSection,
@@ -7,8 +13,9 @@ import {
     MovieMediaSection,
     MovieRelatedSection,
 } from "@/src/components/movie-single";
+import { BackButton } from "@/src/components/common";
 import { getBestTrailer } from "@/src/helpers/movieVideo.helpers";
-import {BackButton} from "@/src/components/common";
+import { getTmdbLanguage } from "@/src/helpers";
 
 type MoviePageProps = {
     params: Promise<{
@@ -19,8 +26,12 @@ type MoviePageProps = {
 export default async function MoviePage({ params }: MoviePageProps) {
     const { id } = await params;
 
+    const cookieStore = await cookies();
+    const lang = cookieStore.get("lang")?.value;
+    const tmdbLanguage = getTmdbLanguage(lang);
+
     const [movie, ruMovie, ukVideos, ruVideos, enVideos] = await Promise.all([
-        getMovieDetailsWithAppend(id, "uk-UA"),
+        getMovieDetailsWithAppend(id, tmdbLanguage),
         getMovieDetails(id, "ru-RU"),
         getMovieVideos(id, "uk-UA"),
         getMovieVideos(id, "ru-RU"),
@@ -66,12 +77,12 @@ export default async function MoviePage({ params }: MoviePageProps) {
             <MovieCrewSection crew={crew} />
 
             <MovieRelatedSection
-                title="Схожі фільми"
+                title={lang === "en" ? "Similar movies" : "Схожі фільми"}
                 movies={similarMovies}
             />
 
             <MovieRelatedSection
-                title="Рекомендації"
+                title={lang === "en" ? "Recommendations" : "Рекомендації"}
                 movies={recommendations}
             />
         </main>
