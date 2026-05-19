@@ -239,19 +239,6 @@ const getTvRecommendations = ({
     );
 };
 
-// const getTvGenres = (
-//     language = "uk-UA"
-// ): Promise<TvGenresResponse> => {
-//     const params = new URLSearchParams({
-//         language,
-//     });
-//
-//     return tmdbFetch<TvGenresResponse>(
-//         `/genre/tv/list?${params.toString()}`,
-//         { revalidate: 86400 }
-//     );
-// };
-
 const getTvGenres = (language = "uk-UA"): Promise<TvGenresResponse> => {
     const params = new URLSearchParams({
         language,

@@ -1,4 +1,7 @@
+import { cookies } from "next/headers";
+
 import { discoverMovies } from "@/src/services";
+
 import { MoviesGrid } from "@/src/components/movies/MoviesGrid";
 import { MoviesPageHeader } from "@/src/components/movies/MoviesPageHeader";
 import { Pagination } from "@/src/components/common/Pagination";
@@ -22,8 +25,20 @@ const getSafePage = (page?: string) => {
     return Math.floor(value);
 };
 
-export default async function MoviesPage({ searchParams }: MoviesPageProps) {
+const getTmdbLanguage = (lang?: string) => {
+    return lang === "en" ? "en-US" : "uk-UA";
+};
+
+export default async function MoviesPage({
+                                             searchParams,
+                                         }: MoviesPageProps) {
     const params = await searchParams;
+
+    const cookieStore = await cookies();
+
+    const lang = cookieStore.get("lang")?.value;
+
+    const tmdbLanguage = getTmdbLanguage(lang);
 
     const page = getSafePage(params.page);
 
@@ -32,6 +47,7 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
         genre: params.genre,
         year: params.year,
         sort: params.sort,
+        language: tmdbLanguage,
     });
 
     return (

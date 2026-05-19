@@ -23,24 +23,20 @@ const getPopularActors = ({
         language,
     });
 
-    return tmdbFetch<ActorListResponse<ActorListItem>>(
-        `/person/popular?${params.toString()}`,
-        { revalidate: 3600 }
-    );
+    return tmdbFetch(`/person/popular?${params.toString()}`, {
+        revalidate: 3600,
+    });
 };
 
 const getActorDetails = (
     actorId: number | string,
     language = "uk-UA"
 ): Promise<ActorDetails> => {
-    const params = new URLSearchParams({
-        language,
-    });
+    const params = new URLSearchParams({ language });
 
-    return tmdbFetch<ActorDetails>(
-        `/person/${actorId}?${params.toString()}`,
-        { revalidate: 86400 }
-    );
+    return tmdbFetch(`/person/${actorId}?${params.toString()}`, {
+        revalidate: 86400,
+    });
 };
 
 const getActorDetailsWithAppend = (
@@ -53,47 +49,39 @@ const getActorDetailsWithAppend = (
             "movie_credits,tv_credits,combined_credits,images,external_ids",
     });
 
-    return tmdbFetch<ActorDetailsWithAppend>(
-        `/person/${actorId}?${params.toString()}`,
-        { revalidate: 86400 }
-    );
+    return tmdbFetch(`/person/${actorId}?${params.toString()}`, {
+        revalidate: 86400,
+    });
 };
 
 const getActorMovieCredits = (
     actorId: number | string,
     language = "uk-UA"
 ): Promise<ActorMovieCreditsResponse> => {
-    const params = new URLSearchParams({
-        language,
-    });
+    const params = new URLSearchParams({ language });
 
-    return tmdbFetch<ActorMovieCreditsResponse>(
-        `/person/${actorId}/movie_credits?${params.toString()}`,
-        { revalidate: 86400 }
-    );
+    return tmdbFetch(`/person/${actorId}/movie_credits?${params.toString()}`, {
+        revalidate: 86400,
+    });
 };
 
 const getActorTvCredits = (
     actorId: number | string,
     language = "uk-UA"
 ): Promise<ActorTvCreditsResponse> => {
-    const params = new URLSearchParams({
-        language,
-    });
+    const params = new URLSearchParams({ language });
 
-    return tmdbFetch<ActorTvCreditsResponse>(
-        `/person/${actorId}/tv_credits?${params.toString()}`,
-        { revalidate: 86400 }
-    );
+    return tmdbFetch(`/person/${actorId}/tv_credits?${params.toString()}`, {
+        revalidate: 86400,
+    });
 };
 
 const getActorImages = (
     actorId: number | string
 ): Promise<ActorImagesResponse> => {
-    return tmdbFetch<ActorImagesResponse>(
-        `/person/${actorId}/images`,
-        { revalidate: 86400 }
-    );
+    return tmdbFetch(`/person/${actorId}/images`, {
+        revalidate: 86400,
+    });
 };
 
 export {
