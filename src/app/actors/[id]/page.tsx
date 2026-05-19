@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 import { BackButton } from "@/src/components/common/BackButton";
 import {
     ActorCreditsSection,
@@ -6,6 +8,7 @@ import {
     ActorImagesSection,
 } from "@/src/components/actor-single";
 import { getActorDetailsWithAppend } from "@/src/services";
+import { getTmdbLanguage } from "@/src/helpers";
 
 type ActorPageProps = {
     params: Promise<{
@@ -16,7 +19,11 @@ type ActorPageProps = {
 export default async function ActorPage({ params }: ActorPageProps) {
     const { id } = await params;
 
-    const actor = await getActorDetailsWithAppend(id, "uk-UA");
+    const cookieStore = await cookies();
+    const lang = cookieStore.get("lang")?.value;
+    const tmdbLanguage = getTmdbLanguage(lang);
+
+    const actor = await getActorDetailsWithAppend(id, tmdbLanguage);
 
     const movieCredits = actor.movie_credits?.cast ?? [];
     const tvCredits = actor.tv_credits?.cast ?? [];

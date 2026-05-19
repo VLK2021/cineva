@@ -1,6 +1,10 @@
+import { cookies } from "next/headers";
+
 import { Pagination } from "@/src/components/common/Pagination";
 import { ActorsGrid, ActorsPageHeader } from "@/src/components/actors";
 import { getPopularActors } from "@/src/services";
+import { getTmdbLanguage } from "@/src/helpers";
+
 import type { ActorListItem } from "@/src/types/actor.types";
 
 type ActorsPageProps = {
@@ -13,12 +17,17 @@ type ActorsPageProps = {
 const getSafePage = (page?: string) => {
     const value = Number(page);
 
-    if (!Number.isFinite(value) || value < 1) return 1;
+    if (!Number.isFinite(value) || value < 1) {
+        return 1;
+    }
 
     return Math.floor(value);
 };
 
-const sortActors = (actors: ActorListItem[], sort = "popularity.desc") => {
+const sortActors = (
+    actors: ActorListItem[],
+    sort = "popularity.desc"
+) => {
     const sorted = [...actors];
 
     if (sort === "popularity.asc") {
@@ -36,12 +45,22 @@ const sortActors = (actors: ActorListItem[], sort = "popularity.desc") => {
     return sorted.sort((a, b) => b.popularity - a.popularity);
 };
 
-export default async function ActorsPage({ searchParams }: ActorsPageProps) {
+export default async function ActorsPage({
+                                             searchParams,
+                                         }: ActorsPageProps) {
     const params = await searchParams;
+
+    const cookieStore = await cookies();
+    const lang = cookieStore.get("lang")?.value;
+    const tmdbLanguage = getTmdbLanguage(lang);
 
     const page = getSafePage(params.page);
 
-    const actors = await getPopularActors({ page });
+    const actors = await getPopularActors({
+        page,
+        language: tmdbLanguage,
+    });
+
     const sortedActors = sortActors(actors.results, params.sort);
 
     return (
