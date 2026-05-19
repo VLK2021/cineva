@@ -77,7 +77,7 @@ const HomeTvSection = ({
                                 />
                             ) : (
                                 <div className="flex h-full w-full items-center justify-center px-4 text-center text-sm text-[var(--color-text-muted)]">
-                                    Немає постера
+                                    {t.noPhoto}
                                 </div>
                             )}
 
