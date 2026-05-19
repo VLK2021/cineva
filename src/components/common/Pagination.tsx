@@ -87,7 +87,6 @@ const Pagination = ({
                 `}
             >
                 <ChevronLeft className="h-4 w-4" />
-                Назад
             </Link>
 
             {items.map((item, index) => {
@@ -134,7 +133,6 @@ const Pagination = ({
                 }
                 `}
             >
-                Далі
                 <ChevronRight className="h-4 w-4" />
             </Link>
         </nav>
