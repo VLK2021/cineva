@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { HeaderLogo } from "@/src/components/header/HeaderLogo";
 import { HeaderNavigation } from "@/src/components/header/HeaderNavigation";
 import { HeaderMobileMenu } from "@/src/components/header/HeaderMobileMenu";
@@ -5,6 +6,7 @@ import { HeaderSearch } from "@/src/components/header/HeaderSearch";
 import { HeaderMobileSearch } from "@/src/components/header/HeaderMobileSearch";
 import { HeaderActions } from "@/src/components/header/HeaderActions";
 import { getMovieGenres, getTvGenres } from "@/src/services";
+import { getTmdbLanguage } from "@/src/helpers/locale.helpers";
 import type { HeaderMegaMenuItem } from "@/src/components/header/HeaderMegaMenu";
 
 const buildGenreItems = (
@@ -19,9 +21,13 @@ const buildGenreItems = (
 };
 
 const Header = async () => {
+    const cookieStore = await cookies();
+    const lang = cookieStore.get("lang")?.value ?? "uk";
+    const tmdbLanguage = getTmdbLanguage(lang);
+
     const [movieGenresResponse, tvGenresResponse] = await Promise.all([
-        getMovieGenres("uk-UA"),
-        getTvGenres("uk-UA"),
+        getMovieGenres(tmdbLanguage),
+        getTvGenres(tmdbLanguage),
     ]);
 
     const movieGenres = buildGenreItems(movieGenresResponse.genres, "/movies");

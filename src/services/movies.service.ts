@@ -228,6 +228,19 @@ const getMovieRecommendations = ({
     );
 };
 
+// const getMovieGenres = (
+//     language = "uk-UA"
+// ): Promise<MovieGenresResponse> => {
+//     const params = new URLSearchParams({
+//         language,
+//     });
+//
+//     return tmdbFetch<MovieGenresResponse>(
+//         `/genre/movie/list?${params.toString()}`,
+//         { revalidate: 86400 }
+//     );
+// };
+
 const getMovieGenres = (
     language = "uk-UA"
 ): Promise<MovieGenresResponse> => {

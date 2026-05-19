@@ -1,9 +1,7 @@
-export type AppLocale = "uk" | "en";
+export type AppLanguage = "uk" | "en";
 
-export const DEFAULT_LOCALE: AppLocale = "uk";
+export const DEFAULT_LANGUAGE: AppLanguage = "uk";
 
-export const getTmdbLanguage = (locale?: string) => {
-    if (locale === "en") return "en-US";
-
-    return "uk-UA";
+export const getTmdbLanguage = (lang?: string) => {
+    return lang === "en" ? "en-US" : "uk-UA";
 };

@@ -7,6 +7,7 @@ import {
     useState,
     type ReactNode,
 } from "react";
+import { useRouter } from "next/navigation";
 
 type Language = "uk" | "en";
 
@@ -17,23 +18,30 @@ type LangContextType = {
 
 const LanguageContext = createContext<LangContextType | undefined>(undefined);
 
-const getInitialLanguage = (): Language => {
-    if (typeof window === "undefined") return "uk";
-
-    const saved = localStorage.getItem("lang");
-
-    if (saved === "uk" || saved === "en") {
-        return saved;
-    }
-
-    return "uk";
+type LanguageProviderProps = {
+    children: ReactNode;
+    initialLang: Language;
 };
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-    const [lang, setLang] = useState<Language>(getInitialLanguage);
+export const LanguageProvider = ({
+                                     children,
+                                     initialLang,
+                                 }: LanguageProviderProps) => {
+    const router = useRouter();
+    const [lang, setLangState] = useState<Language>(initialLang);
+
+    const setLang = (nextLang: Language) => {
+        setLangState(nextLang);
+
+        localStorage.setItem("lang", nextLang);
+        document.cookie = `lang=${nextLang}; path=/; max-age=31536000; SameSite=Lax`;
+
+        router.refresh();
+    };
 
     useEffect(() => {
         localStorage.setItem("lang", lang);
+        document.cookie = `lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
     }, [lang]);
 
     return (
