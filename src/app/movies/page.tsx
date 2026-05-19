@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 
 import { discoverMovies } from "@/src/services";
-
 import { MoviesGrid } from "@/src/components/movies/MoviesGrid";
 import { MoviesPageHeader } from "@/src/components/movies/MoviesPageHeader";
 import { Pagination } from "@/src/components/common/Pagination";
+import {getTmdbLanguage} from "@/src/helpers";
 
 type MoviesPageProps = {
     searchParams: Promise<{
@@ -25,9 +25,9 @@ const getSafePage = (page?: string) => {
     return Math.floor(value);
 };
 
-const getTmdbLanguage = (lang?: string) => {
-    return lang === "en" ? "en-US" : "uk-UA";
-};
+// const getTmdbLanguage = (lang?: string) => {
+//     return lang === "en" ? "en-US" : "uk-UA";
+// };
 
 export default async function MoviesPage({
                                              searchParams,

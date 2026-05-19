@@ -1,6 +1,8 @@
 import { Pagination } from "@/src/components/common/Pagination";
 import { TvGrid, TvPageHeader } from "@/src/components/tv";
 import { discoverTv } from "@/src/services";
+import {cookies} from "next/headers";
+import {getTmdbLanguage} from "@/src/helpers";
 
 type TvPageProps = {
     searchParams: Promise<{
@@ -24,6 +26,12 @@ const getSafePage = (page?: string) => {
 export default async function TvPage({ searchParams }: TvPageProps) {
     const params = await searchParams;
 
+    const cookieStore = await cookies();
+
+    const lang = cookieStore.get("lang")?.value;
+
+    const tmdbLanguage = getTmdbLanguage(lang);
+
     const page = getSafePage(params.page);
 
     const tvShows = await discoverTv({
@@ -31,6 +39,7 @@ export default async function TvPage({ searchParams }: TvPageProps) {
         genre: params.genre,
         year: params.year,
         sort: params.sort,
+        language: tmdbLanguage,
     });
 
     return (
