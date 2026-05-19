@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 import { BackButton } from "@/src/components/common/BackButton";
 import {
     TvAdvancedInfoSection,
@@ -18,6 +20,7 @@ import {
     getTvVideos,
 } from "@/src/services";
 import { getBestTvTrailer } from "@/src/helpers/tvVideo.helpers";
+import { getTmdbLanguage } from "@/src/helpers";
 
 type TvPageProps = {
     params: Promise<{
@@ -28,8 +31,12 @@ type TvPageProps = {
 export default async function TvPage({ params }: TvPageProps) {
     const { id } = await params;
 
+    const cookieStore = await cookies();
+    const lang = cookieStore.get("lang")?.value;
+    const tmdbLanguage = getTmdbLanguage(lang);
+
     const [tv, ukVideos, ruVideos, enVideos] = await Promise.all([
-        getTvDetailsWithAppend(id, "uk-UA"),
+        getTvDetailsWithAppend(id, tmdbLanguage),
         getTvVideos(id, "uk-UA"),
         getTvVideos(id, "ru-RU"),
         getTvVideos(id, "en-US"),
@@ -40,7 +47,7 @@ export default async function TvPage({ params }: TvPageProps) {
             getTvSeasonDetails({
                 tvId: id,
                 seasonNumber: season.season_number,
-                language: "uk-UA",
+                language: tmdbLanguage,
             }).catch(() => null)
         )
     );
@@ -97,12 +104,12 @@ export default async function TvPage({ params }: TvPageProps) {
             <TvReviewsSection reviews={reviews} />
 
             <TvRelatedSection
-                title="Схожі серіали"
+                title={lang === "en" ? "Similar TV shows" : "Схожі серіали"}
                 tvShows={similarTv}
             />
 
             <TvRelatedSection
-                title="Рекомендації"
+                title={lang === "en" ? "Recommendations" : "Рекомендації"}
                 tvShows={recommendations}
             />
         </main>
