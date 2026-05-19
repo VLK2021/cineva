@@ -5,7 +5,8 @@ const en = {
     details: 'Details',
     allFilms: 'All Films',
     viewAll: "View all",
-    searchPlaceholder: "Search movies, TV shows, actors..."
+    searchPlaceholder: "Search movies, TV shows, actors...",
+    noPhoto: "No photo"
 }
 
 export default en;

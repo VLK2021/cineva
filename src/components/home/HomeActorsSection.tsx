@@ -59,7 +59,7 @@ const HomeActorsSection = ({
                                 />
                             ) : (
                                 <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                    Немає фото
+                                    {t.noPhoto}
                                 </div>
                             )}
 
