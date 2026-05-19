@@ -72,9 +72,15 @@ export default async function MoviePage({ params }: MoviePageProps) {
                 posterPath={movie.poster_path}
             />
 
-            <MovieCastSection cast={cast} />
+            <MovieCastSection
+                cast={cast}
+                title={lang === "en" ? "Actors" : "Актори"}
+            />
 
-            <MovieCrewSection crew={crew} />
+            <MovieCrewSection
+                crew={crew}
+                title={lang === "en" ? "Crew" : "Команда"}
+            />
 
             <MovieRelatedSection
                 title={lang === "en" ? "Similar movies" : "Схожі фільми"}

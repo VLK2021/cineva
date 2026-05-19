@@ -5,14 +5,18 @@ import { IMAGE_BASE_URL } from "./movieSingle.helpers";
 
 type MovieCastSectionProps = {
     cast: MovieCastMember[];
+    title: string;
 };
 
-const MovieCastSection = ({ cast }: MovieCastSectionProps) => {
+const MovieCastSection = ({
+                              cast,
+                              title,
+                          }: MovieCastSectionProps) => {
     if (!cast.length) return null;
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
-            <h2 className="text-2xl font-black">Актори</h2>
+            <h2 className="text-2xl font-black">{title}</h2>
 
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9">
                 {cast.map((actor) => (

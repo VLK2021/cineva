@@ -2,14 +2,15 @@ import type { MovieCrewMember } from "@/src/types";
 
 type MovieCrewSectionProps = {
     crew: MovieCrewMember[];
+    title: string;
 };
 
-const MovieCrewSection = ({ crew }: MovieCrewSectionProps) => {
+const MovieCrewSection = ({title, crew }: MovieCrewSectionProps) => {
     if (!crew.length) return null;
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
-            <h2 className="text-2xl font-black">Команда</h2>
+            <h2 className="text-2xl font-black">{title}</h2>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {crew.map((member) => (
