@@ -1,8 +1,12 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
-import type { MovieListItem } from "@/src/types";
+import {Star} from "lucide-react";
+import type {MovieListItem} from "@/src/types";
 import {useLanguage} from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type HomeMovieSectionProps = {
     title: string;
@@ -11,8 +15,12 @@ type HomeMovieSectionProps = {
 
 const IMAGE_BASE_URL = process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
 
-const HomeMovieSection = ({ title, movies }: HomeMovieSectionProps) => {
+const HomeMovieSection = ({title, movies}: HomeMovieSectionProps) => {
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     if (!movies.length) return null;
+
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
@@ -25,7 +33,7 @@ const HomeMovieSection = ({ title, movies }: HomeMovieSectionProps) => {
                     href="/movies"
                     className="text-sm font-semibold text-[var(--color-brand)] hover:underline"
                 >
-                    Дивитись всі
+                    {t.viewAll}
                 </Link>
             </div>
 
@@ -53,11 +61,12 @@ const HomeMovieSection = ({ title, movies }: HomeMovieSectionProps) => {
                                 {movie.title}
                             </h3>
 
-                            <div className="mt-2 flex items-center justify-between text-xs text-[var(--color-text-muted)]">
+                            <div
+                                className="mt-2 flex items-center justify-between text-xs text-[var(--color-text-muted)]">
                                 <span>{movie.release_date?.slice(0, 4) || "—"}</span>
 
                                 <span className="inline-flex items-center gap-1">
-                                    <Star className="h-3 w-3 fill-[var(--color-brand)] text-[var(--color-brand)]" />
+                                    <Star className="h-3 w-3 fill-[var(--color-brand)] text-[var(--color-brand)]"/>
                                     {movie.vote_average.toFixed(1)}
                                 </span>
                             </div>
@@ -69,4 +78,4 @@ const HomeMovieSection = ({ title, movies }: HomeMovieSectionProps) => {
     );
 };
 
-export { HomeMovieSection };
+export {HomeMovieSection};

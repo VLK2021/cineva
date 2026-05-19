@@ -1,11 +1,14 @@
 "use client";
 
-import { Search, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useDebounce } from "@/src/hooks/useDebounce";
-import { SearchResultItem } from "@/src/components/search/SearchResultItem";
-import type { SearchMultiResponse } from "@/src/types/search.types";
+import {Search, X} from "lucide-react";
+import {useEffect, useRef, useState} from "react";
+import {useRouter} from "next/navigation";
+import {useDebounce} from "@/src/hooks/useDebounce";
+import {SearchResultItem} from "@/src/components/search/SearchResultItem";
+import type {SearchMultiResponse} from "@/src/types/search.types";
+import {useLanguage} from "@/src/context";
+import en from "@/src/locales/en";
+import uk from "@/src/locales/uk";
 
 const HeaderSearch = () => {
     const router = useRouter();
@@ -18,6 +21,9 @@ const HeaderSearch = () => {
 
     const debouncedQuery = useDebounce(query, 500);
     const trimmedQuery = query.trim();
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -51,7 +57,7 @@ const HeaderSearch = () => {
             try {
                 const response = await fetch(
                     `/api/search?query=${encodeURIComponent(searchValue)}`,
-                    { signal: controller.signal }
+                    {signal: controller.signal}
                 );
 
                 if (!response.ok) {
@@ -100,7 +106,8 @@ const HeaderSearch = () => {
                 }}
                 className="relative"
             >
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                <Search
+                    className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-muted)]"/>
 
                 <input
                     value={query}
@@ -118,7 +125,7 @@ const HeaderSearch = () => {
                             setIsOpen(false);
                         }
                     }}
-                    placeholder="Пошук фільмів, серіалів, акторів..."
+                    placeholder={t.searchPlaceholder}
                     className="h-11 w-full rounded-full border border-[var(--color-border)] bg-[var(--color-background)] pl-11 pr-11 text-sm font-semibold text-[var(--color-text)] outline-none transition focus:border-[var(--color-brand)]"
                 />
 
@@ -132,13 +139,14 @@ const HeaderSearch = () => {
                         }}
                         className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-[var(--color-text-muted)] transition hover:text-[var(--color-text)]"
                     >
-                        <X className="h-4 w-4" />
+                        <X className="h-4 w-4"/>
                     </button>
                 )}
             </form>
 
             {isOpen && trimmedQuery.length >= 2 && (
-                <div className="absolute right-0 top-full z-50 mt-3 w-[420px] overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-3 shadow-2xl">
+                <div
+                    className="absolute right-0 top-full z-50 mt-3 w-[420px] overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-3 shadow-2xl">
                     {isLoading && (
                         <div className="p-4 text-sm font-semibold text-[var(--color-text-muted)]">
                             Шукаю...
@@ -178,4 +186,4 @@ const HeaderSearch = () => {
     );
 };
 
-export { HeaderSearch };
+export {HeaderSearch};

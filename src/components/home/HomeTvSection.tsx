@@ -1,7 +1,12 @@
+"use client"
+
 import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import type { TvListItem } from "@/src/types/tv.types";
+import {useLanguage} from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type HomeTvSectionProps = {
     title: string;
@@ -22,6 +27,9 @@ const HomeTvSection = ({
                            tvShows,
                            href = "/tv",
                        }: HomeTvSectionProps) => {
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     if (!tvShows.length) return null;
 
     return (
@@ -35,7 +43,7 @@ const HomeTvSection = ({
                     href={href}
                     className="text-sm font-bold text-[var(--color-brand)] transition hover:opacity-80"
                 >
-                    Дивитися всі
+                    {t.viewAll}
                 </Link>
             </div>
 

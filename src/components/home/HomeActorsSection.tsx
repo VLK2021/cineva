@@ -1,7 +1,11 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import type { ActorListItem } from "@/src/types/actor.types";
+import {useLanguage} from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 
 type HomeActorsSectionProps = {
     title: string;
@@ -17,6 +21,9 @@ const HomeActorsSection = ({
                                actors,
                                href = "/actors",
                            }: HomeActorsSectionProps) => {
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     if (!actors.length) return null;
 
     return (
@@ -30,7 +37,7 @@ const HomeActorsSection = ({
                     href={href}
                     className="text-sm font-bold text-[var(--color-brand)] transition hover:opacity-80"
                 >
-                    Дивитися всі
+                    {t.viewAll}
                 </Link>
             </div>
 
