@@ -59,7 +59,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
                     <BackButton fallbackHref="/movies" />
                 </div>
 
-                {/*<MovieHero movie={movie} trailer={trailer} />*/}
                 <MovieHero
                     movie={movie}
                     trailer={trailer}
@@ -77,7 +76,26 @@ export default async function MoviePage({ params }: MoviePageProps) {
                 />
             </div>
 
-            <MovieInfoSection movie={movie} />
+            <MovieInfoSection
+                movie={movie}
+                labels={{
+                    mainInfo: lang === "en" ? "Main information" : "Основна інформація",
+                    additional: lang === "en" ? "Additional" : "Додатково",
+                    budget: lang === "en" ? "Budget" : "Бюджет",
+                    revenue: lang === "en" ? "Revenue" : "Збори",
+                    originalLanguage: lang === "en" ? "Original language" : "Мова оригіналу",
+                    voteCount: lang === "en" ? "Vote count" : "Кількість голосів",
+                    releaseDate: lang === "en" ? "Release date" : "Дата релізу",
+                    runtime: lang === "en" ? "Runtime" : "Тривалість",
+                    popularity: lang === "en" ? "Popularity" : "Популярність",
+                    productionCountries:
+                        lang === "en" ? "Production countries" : "Країни виробництва",
+                    languages: lang === "en" ? "Languages" : "Мови",
+                    companies: lang === "en" ? "Companies" : "Компанії",
+                    officialSite: lang === "en" ? "Official website" : "Офіційний сайт",
+                    unknown: lang === "en" ? "Unknown" : "Невідомо",
+                }}
+            />
 
             <MovieMediaSection
                 trailer={trailer}

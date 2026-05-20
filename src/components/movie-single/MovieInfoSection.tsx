@@ -15,39 +15,102 @@ import { formatMoney, formatRuntime } from "./movieSingle.helpers";
 
 type MovieInfoSectionProps = {
     movie: MovieDetailsWithAppend;
+    labels: {
+        mainInfo: string;
+        additional: string;
+        budget: string;
+        revenue: string;
+        originalLanguage: string;
+        voteCount: string;
+        releaseDate: string;
+        runtime: string;
+        popularity: string;
+        productionCountries: string;
+        languages: string;
+        companies: string;
+        officialSite: string;
+        unknown: string;
+    };
 };
 
-const MovieInfoSection = ({ movie }: MovieInfoSectionProps) => {
+const MovieInfoSection = ({
+                              movie,
+                              labels,
+                          }: MovieInfoSectionProps) => {
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-                <InfoPanel title="Основна інформація">
+                <InfoPanel title={labels.mainInfo}>
                     <div className="grid gap-4 sm:grid-cols-2">
-                        <InfoItem icon={<DollarSign />} label="Бюджет" value={formatMoney(movie.budget)} />
-                        <InfoItem icon={<DollarSign />} label="Збори" value={formatMoney(movie.revenue)} />
-                        <InfoItem icon={<Globe />} label="Мова оригіналу" value={movie.original_language.toUpperCase()} />
-                        <InfoItem icon={<Users />} label="Кількість голосів" value={String(movie.vote_count)} />
-                        <InfoItem icon={<Calendar />} label="Дата релізу" value={movie.release_date || "Невідомо"} />
-                        <InfoItem icon={<Clock />} label="Тривалість" value={formatRuntime(movie.runtime)} />
-                        <InfoItem icon={<Film />} label="IMDB ID" value={movie.imdb_id || "Невідомо"} />
-                        <InfoItem icon={<Star />} label="Популярність" value={String(Math.round(movie.popularity))} />
+                        <InfoItem
+                            icon={<DollarSign />}
+                            label={labels.budget}
+                            value={formatMoney(movie.budget)}
+                        />
+
+                        <InfoItem
+                            icon={<DollarSign />}
+                            label={labels.revenue}
+                            value={formatMoney(movie.revenue)}
+                        />
+
+                        <InfoItem
+                            icon={<Globe />}
+                            label={labels.originalLanguage}
+                            value={movie.original_language.toUpperCase()}
+                        />
+
+                        <InfoItem
+                            icon={<Users />}
+                            label={labels.voteCount}
+                            value={String(movie.vote_count)}
+                        />
+
+                        <InfoItem
+                            icon={<Calendar />}
+                            label={labels.releaseDate}
+                            value={movie.release_date || labels.unknown}
+                        />
+
+                        <InfoItem
+                            icon={<Clock />}
+                            label={labels.runtime}
+                            value={formatRuntime(movie.runtime)}
+                        />
+
+                        <InfoItem
+                            icon={<Film />}
+                            label="IMDB ID"
+                            value={movie.imdb_id || labels.unknown}
+                        />
+
+                        <InfoItem
+                            icon={<Star />}
+                            label={labels.popularity}
+                            value={String(Math.round(movie.popularity))}
+                        />
                     </div>
                 </InfoPanel>
 
-                <InfoPanel title="Додатково">
+                <InfoPanel title={labels.additional}>
                     <InfoBlock
-                        title="Країни виробництва"
+                        title={labels.productionCountries}
                         values={movie.production_countries.map((item) => item.name)}
+                        unknown={labels.unknown}
                     />
 
                     <InfoBlock
-                        title="Мови"
-                        values={movie.spoken_languages.map((item) => item.name || item.english_name)}
+                        title={labels.languages}
+                        values={movie.spoken_languages.map(
+                            (item) => item.name || item.english_name
+                        )}
+                        unknown={labels.unknown}
                     />
 
                     <InfoBlock
-                        title="Компанії"
+                        title={labels.companies}
                         values={movie.production_companies.map((item) => item.name)}
+                        unknown={labels.unknown}
                     />
 
                     {movie.homepage && (
@@ -58,7 +121,7 @@ const MovieInfoSection = ({ movie }: MovieInfoSectionProps) => {
                             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-brand)] hover:underline"
                         >
                             <LinkIcon className="h-4 w-4" />
-                            Офіційний сайт
+                            {labels.officialSite}
                         </a>
                     )}
                 </InfoPanel>
@@ -108,9 +171,11 @@ const InfoItem = ({
 const InfoBlock = ({
                        title,
                        values,
+                       unknown,
                    }: {
     title: string;
     values: string[];
+    unknown: string;
 }) => {
     const uniqueValues = Array.from(
         new Set(values.filter((value) => value.trim().length > 0))
@@ -135,7 +200,7 @@ const InfoBlock = ({
                     ))
                 ) : (
                     <span className="text-sm text-[var(--color-text-muted)]">
-                        Невідомо
+                        {unknown}
                     </span>
                 )}
             </div>
