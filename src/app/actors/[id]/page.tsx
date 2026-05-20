@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { BackButton } from "@/src/components/common/BackButton";
@@ -7,7 +8,10 @@ import {
     ActorHero,
     ActorImagesSection,
 } from "@/src/components/actor-single";
-import { getActorDetailsWithAppend } from "@/src/services";
+import {
+    getActorDetails,
+    getActorDetailsWithAppend,
+} from "@/src/services";
 import { getTmdbLanguage } from "@/src/helpers";
 
 type ActorPageProps = {
@@ -15,6 +19,53 @@ type ActorPageProps = {
         id: string;
     }>;
 };
+
+const IMAGE_BASE_URL =
+    process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
+
+export async function generateMetadata({
+                                           params,
+                                       }: ActorPageProps): Promise<Metadata> {
+    const { id } = await params;
+
+    const actor = await getActorDetails(id, "en-US");
+
+    const title = actor.name || "Actor";
+
+    const description =
+        actor.biography ||
+        `Biography, filmography, photos and actor information for ${title} on CINEVA.`;
+
+    return {
+        title: `${title} | CINEVA`,
+        description,
+
+        openGraph: {
+            title: `${title} | CINEVA`,
+            description,
+            type: "profile",
+            images: actor.profile_path
+                ? [
+                    {
+                        url: `${IMAGE_BASE_URL}/w780${actor.profile_path}`,
+                        width: 780,
+                        height: 1170,
+                        alt: title,
+                    },
+                ]
+                : [],
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            title: `${title} | CINEVA`,
+            description,
+            images: actor.profile_path
+                ? [`${IMAGE_BASE_URL}/w780${actor.profile_path}`]
+                : [],
+        },
+    };
+}
 
 export default async function ActorPage({ params }: ActorPageProps) {
     const { id } = await params;
@@ -41,16 +92,24 @@ export default async function ActorPage({ params }: ActorPageProps) {
                     labels={{
                         noPhoto: lang === "en" ? "No photo" : "Немає фото",
                         actor: lang === "en" ? "Actor" : "Актор",
-                        unknownDate: lang === "en" ? "Unknown date" : "Дата невідома",
+                        unknownDate:
+                            lang === "en"
+                                ? "Unknown date"
+                                : "Дата невідома",
                         biographyMissing:
                             lang === "en"
                                 ? "Biography is not available."
                                 : "Біографія відсутня.",
-                        genderFemale: lang === "en" ? "Female" : "Жінка",
-                        genderMale: lang === "en" ? "Male" : "Чоловік",
+                        genderFemale:
+                            lang === "en" ? "Female" : "Жінка",
+                        genderMale:
+                            lang === "en" ? "Male" : "Чоловік",
                         genderNonBinary:
-                            lang === "en" ? "Non-binary person" : "Небінарна персона",
-                        genderUnknown: lang === "en" ? "Unknown" : "Невідомо",
+                            lang === "en"
+                                ? "Non-binary person"
+                                : "Небінарна персона",
+                        genderUnknown:
+                            lang === "en" ? "Unknown" : "Невідомо",
                     }}
                 />
             </div>
@@ -60,7 +119,9 @@ export default async function ActorPage({ params }: ActorPageProps) {
                 labels={{
                     title: lang === "en" ? "Links" : "Посилання",
                     officialSite:
-                        lang === "en" ? "Official website" : "Офіційний сайт",
+                        lang === "en"
+                            ? "Official website"
+                            : "Офіційний сайт",
                 }}
             />
 
