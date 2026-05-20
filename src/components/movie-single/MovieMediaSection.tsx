@@ -1,13 +1,15 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-import { Film, Globe2, Video, FlaskConical } from "lucide-react";
+import { Film, FlaskConical, Globe2, Video } from "lucide-react";
 import type { MovieVideo } from "@/src/types";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 import { TrailerPlayerTab } from "@/src/components/movie-single/TrailerPlayerTab";
 import { KinoBdPlayerTab } from "@/src/components/movie-single/KinoBdPlayerTab";
 import { TabWatchN } from "@/src/components/movie-single/TabWatchN";
 import { TabWatchN1 } from "@/src/components/movie-single/TabWatchN1";
-
 import { TabPlayersTest } from "@/src/components/movie-single/TabPlayersTest";
 
 type MovieMediaSectionProps = {
@@ -32,13 +34,16 @@ const MovieMediaSection = ({
                                tmdbId,
                                posterPath,
                            }: MovieMediaSectionProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     const tabs = useMemo<MediaTab[]>(() => {
         return [
             ...(trailer
                 ? [
                     {
                         id: "trailer",
-                        title: "Трейлер",
+                        title: t.trailer,
                         icon: <Video className="h-4 w-4" />,
                         content: <TrailerPlayerTab trailer={trailer} />,
                     },
@@ -47,7 +52,7 @@ const MovieMediaSection = ({
 
             {
                 id: "kinobd",
-                title: "Дивитися фільм",
+                title: t.watchMovie,
                 icon: <Film className="h-4 w-4" />,
                 content: (
                     <KinoBdPlayerTab
@@ -74,27 +79,17 @@ const MovieMediaSection = ({
                 id: "watchn1",
                 title: "Watch N1",
                 icon: <Globe2 className="h-4 w-4" />,
-                content: (
-                    <TabWatchN1
-                        tmdbId={tmdbId}
-                        title={movieTitle}
-                    />
-                ),
+                content: <TabWatchN1 tmdbId={tmdbId} title={movieTitle} />,
             },
 
             {
                 id: "players-test",
                 title: "Test Players",
                 icon: <FlaskConical className="h-4 w-4" />,
-                content: (
-                    <TabPlayersTest
-                        tmdbId={tmdbId}
-                        title={movieTitle}
-                    />
-                ),
+                content: <TabPlayersTest tmdbId={tmdbId} title={movieTitle} />,
             },
         ];
-    }, [trailer, kinopoiskId, movieTitle, tmdbId, posterPath]);
+    }, [trailer, kinopoiskId, movieTitle, tmdbId, posterPath, t.trailer, t.watchMovie]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 
@@ -105,7 +100,7 @@ const MovieMediaSection = ({
     return (
         <section id="media" className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-2xl font-black">Медіа</h2>
+                <h2 className="text-2xl font-black">{t.media}</h2>
 
                 <div className="flex flex-wrap rounded-full border border-[var(--color-border)] bg-[var(--color-card)] p-1 shadow-sm">
                     {tabs.map((tab) => (

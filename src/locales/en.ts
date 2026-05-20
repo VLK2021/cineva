@@ -20,7 +20,9 @@ const en = {
     nameAZ: "Name A-Z",
     nameZA: "Name Z-A",
     movie: "Movie",
-    watchMovie: "Watch movie"
+    watchMovie: "Watch movie",
+    media: "Media",
+    trailer: "Trailer",
 }
 
 export default en;

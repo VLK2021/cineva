@@ -20,7 +20,9 @@ const uk = {
     nameAZ: "Імʼя A-Z",
     nameZA: "Імʼя Z-A",
     movie: "Фільм",
-    watchMovie: "Дивитись фільм"
+    watchMovie: "Дивитись фільм",
+    media: "Медіа",
+    trailer: "Трейлер",
 }
 
 export default uk;
