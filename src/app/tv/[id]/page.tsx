@@ -75,7 +75,24 @@ export default async function TvPage({ params }: TvPageProps) {
                     <BackButton fallbackHref="/tv" />
                 </div>
 
-                <TvHero tv={tv} trailer={trailer} />
+                <TvHero
+                    tv={tv}
+                    trailer={trailer}
+                    labels={{
+                        noPoster: lang === "en" ? "No poster" : "Немає постера",
+                        tvSeries: lang === "en" ? "TV Series" : "Серіал",
+                        seasons: lang === "en" ? "seasons" : "сезонів",
+                        episodes: lang === "en" ? "episodes" : "серій",
+                        noDescription:
+                            lang === "en"
+                                ? "Description is not available."
+                                : "Опис відсутній.",
+                        watchTrailer:
+                            lang === "en"
+                                ? "Watch trailer"
+                                : "Дивитися трейлер",
+                    }}
+                />
             </div>
 
             <TvAdvancedInfoSection tv={tv} />
