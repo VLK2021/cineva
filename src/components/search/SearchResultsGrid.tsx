@@ -3,13 +3,19 @@ import { SearchResultCard } from "@/src/components/search/SearchResultCard";
 
 type SearchResultsGridProps = {
     results: SearchResult[];
+    labels: {
+        nothingFound: string;
+    };
 };
 
-const SearchResultsGrid = ({ results }: SearchResultsGridProps) => {
+const SearchResultsGrid = ({
+                               results,
+                               labels,
+                           }: SearchResultsGridProps) => {
     if (!results.length) {
         return (
             <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-8 text-center text-[var(--color-text-muted)]">
-                Нічого не знайдено.
+                {labels.nothingFound}
             </div>
         );
     }

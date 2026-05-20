@@ -13,7 +13,7 @@ type SearchMultiParams = {
 type SearchMultiLanguagesParams = {
     query: string;
     page?: number;
-    languages?: string[];
+    primaryLanguage?: string;
 };
 
 const searchMulti = ({
@@ -40,7 +40,9 @@ const dedupeSearchResults = (results: SearchResult[]) => {
     const map = new Map<string, SearchResult>();
 
     results.forEach((item) => {
-        if (!["movie", "tv", "person"].includes(item.media_type)) return;
+        if (!["movie", "tv", "person"].includes(item.media_type)) {
+            return;
+        }
 
         const key = `${item.media_type}-${item.id}`;
 
@@ -54,11 +56,21 @@ const dedupeSearchResults = (results: SearchResult[]) => {
     );
 };
 
+const getSearchLanguages = (primaryLanguage: string) => {
+    if (primaryLanguage === "en-US") {
+        return ["en-US", "uk-UA", "ru-RU"];
+    }
+
+    return ["uk-UA", "en-US", "ru-RU"];
+};
+
 const searchMultiLanguages = async ({
                                         query,
                                         page = 1,
-                                        languages = ["uk-UA", "en-US", "ru-RU"],
+                                        primaryLanguage = "uk-UA",
                                     }: SearchMultiLanguagesParams): Promise<SearchMultiResponse> => {
+    const languages = getSearchLanguages(primaryLanguage);
+
     const responses = await Promise.all(
         languages.map((language) =>
             searchMulti({
@@ -82,13 +94,11 @@ const searchMultiLanguages = async ({
         0
     );
 
-    const totalResults = mergedResults.length;
-
     return {
         page,
         results: mergedResults,
         total_pages: maxTotalPages,
-        total_results: totalResults,
+        total_results: mergedResults.length,
     };
 };
 

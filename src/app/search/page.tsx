@@ -36,6 +36,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             ? await searchMultiLanguages({
                 query,
                 page,
+                primaryLanguage: isEn ? "en-US" : "uk-UA",
             })
             : null;
 
@@ -71,7 +72,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         : "Для пошуку потрібно мінімум 2 символи."}
                 </div>
             ) : (
-                <SearchResultsGrid results={results} />
+                <SearchResultsGrid
+                    results={results}
+                    labels={{
+                        nothingFound: isEn
+                            ? "Nothing found."
+                            : "Нічого не знайдено.",
+                    }}
+                />
             )}
 
             {data && data.total_pages > 1 && (
