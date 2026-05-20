@@ -19,6 +19,8 @@ const uk = {
     lessPopular: "Менш популярні",
     nameAZ: "Імʼя A-Z",
     nameZA: "Імʼя Z-A",
+    movie: "Фільм",
+    watchMovie: "Дивитись фільм"
 }
 
 export default uk;

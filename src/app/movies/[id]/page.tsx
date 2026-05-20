@@ -59,7 +59,22 @@ export default async function MoviePage({ params }: MoviePageProps) {
                     <BackButton fallbackHref="/movies" />
                 </div>
 
-                <MovieHero movie={movie} trailer={trailer} />
+                {/*<MovieHero movie={movie} trailer={trailer} />*/}
+                <MovieHero
+                    movie={movie}
+                    trailer={trailer}
+                    labels={{
+                        movie: lang === "en" ? "Movie" : "Фільм",
+                        originalTitle: lang === "en" ? "Original title:" : "Оригінальна назва:",
+                        unknown: lang === "en" ? "Unknown" : "Невідомо",
+                        noDescription:
+                            lang === "en"
+                                ? "Description for this movie is not available yet."
+                                : "Опис для цього фільму поки відсутній.",
+                        watchMovie: lang === "en" ? "Watch movie" : "Дивитись фільм",
+                        watchTrailer: lang === "en" ? "Watch trailer" : "Дивитись трейлер",
+                    }}
+                />
             </div>
 
             <MovieInfoSection movie={movie} />

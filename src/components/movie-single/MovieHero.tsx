@@ -7,9 +7,21 @@ import { formatRuntime, getYear, IMAGE_BASE_URL } from "./movieSingle.helpers";
 type MovieHeroProps = {
     movie: MovieDetailsWithAppend;
     trailer?: MovieVideo;
+    labels: {
+        movie: string;
+        originalTitle: string;
+        unknown: string;
+        noDescription: string;
+        watchMovie: string;
+        watchTrailer: string;
+    };
 };
 
-const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
+const MovieHero = ({
+                       movie,
+                       trailer,
+                       labels,
+                   }: MovieHeroProps) => {
     return (
         <section className="relative min-h-[700px] overflow-hidden">
             {movie.backdrop_path && (
@@ -42,7 +54,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
                 <div className="max-w-4xl text-white">
                     <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[var(--color-brand)] px-4 py-2 text-xs font-bold uppercase tracking-wide">
                         <Film className="h-4 w-4" />
-                        Фільм
+                        {labels.movie}
                     </div>
 
                     <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
@@ -51,7 +63,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
 
                     {movie.original_title && movie.original_title !== movie.title && (
                         <p className="mt-2 text-lg text-white/60">
-                            Оригінальна назва: {movie.original_title}
+                            {labels.originalTitle} {movie.original_title}
                         </p>
                     )}
 
@@ -65,7 +77,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
                         <Badge icon={<Star />} value={`${movie.vote_average.toFixed(1)} / 10`} />
                         <Badge icon={<Calendar />} value={getYear(movie.release_date)} />
                         <Badge icon={<Clock />} value={formatRuntime(movie.runtime)} />
-                        <Badge value={movie.status || "Невідомо"} />
+                        <Badge value={movie.status || labels.unknown} />
                     </div>
 
                     <div className="mt-5 flex flex-wrap gap-2">
@@ -81,7 +93,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
                     </div>
 
                     <p className="mt-7 max-w-3xl text-base leading-8 text-white/80">
-                        {movie.overview || "Опис для цього фільму поки відсутній."}
+                        {movie.overview || labels.noDescription}
                     </p>
 
                     <div className="mt-8 flex flex-wrap gap-3">
@@ -89,7 +101,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
                             type="button"
                             className="rounded-full bg-[var(--color-brand)] px-7 py-3 text-sm font-bold text-white transition hover:scale-[1.03] active:scale-95"
                         >
-                            Дивитись фільм
+                            {labels.watchMovie}
                         </button>
 
                         {trailer && (
@@ -97,7 +109,7 @@ const MovieHero = ({ movie, trailer }: MovieHeroProps) => {
                                 href="#trailer"
                                 className="rounded-full border border-white/30 bg-white/10 px-7 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/20 active:scale-95"
                             >
-                                Дивитись трейлер
+                                {labels.watchTrailer}
                             </a>
                         )}
                     </div>

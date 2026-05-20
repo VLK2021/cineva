@@ -19,6 +19,8 @@ const en = {
     lessPopular: "Less popular",
     nameAZ: "Name A-Z",
     nameZA: "Name Z-A",
+    movie: "Movie",
+    watchMovie: "Watch movie"
 }
 
 export default en;
