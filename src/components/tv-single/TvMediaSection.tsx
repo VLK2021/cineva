@@ -1,11 +1,12 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-import { Film, Globe2, Video } from "lucide-react";
+import { Globe2, Video } from "lucide-react";
 import type { TvSeasonDetails, TvVideo } from "@/src/types/tv.types";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 import { TvTrailerPlayerTab } from "@/src/components/tv-single/TvTrailerPlayerTab";
-import { TvKinoBdPlayerTab } from "@/src/components/tv-single/TvKinoBdPlayerTab";
-import { TabWatchN } from "@/src/components/tv-single/TabWatchN";
 import { TvTabWatchN1 } from "@/src/components/tv-single/TvTabWatchN1";
 
 type TvMediaSectionProps = {
@@ -26,50 +27,25 @@ type MediaTab = {
 
 const TvMediaSection = ({
                             trailer,
-                            imdbId,
                             tvTitle,
                             tmdbId,
-                            posterPath,
                             seasons,
                         }: TvMediaSectionProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     const tabs = useMemo<MediaTab[]>(() => {
         return [
             ...(trailer
                 ? [
                     {
                         id: "trailer",
-                        title: "Трейлер",
+                        title: t.trailer,
                         icon: <Video className="h-4 w-4" />,
                         content: <TvTrailerPlayerTab trailer={trailer} />,
                     },
                 ]
                 : []),
-
-            // {
-            //     id: "kinobd",
-            //     title: "Дивитися серіал",
-            //     icon: <Film className="h-4 w-4" />,
-            //     content: (
-            //         <TvKinoBdPlayerTab
-            //             imdbId={imdbId}
-            //             tvTitle={tvTitle}
-            //         />
-            //     ),
-            // },
-
-            // {
-            //     id: "watchn",
-            //     title: "Watch EN",
-            //     icon: <Globe2 className="h-4 w-4" />,
-            //     content: (
-            //         <TabWatchN
-            //             tmdbId={tmdbId}
-            //             title={tvTitle}
-            //             posterPath={posterPath}
-            //             seasons={seasons}
-            //         />
-            //     ),
-            // },
 
             {
                 id: "watchn1",
@@ -84,7 +60,7 @@ const TvMediaSection = ({
                 ),
             },
         ];
-    }, [trailer, imdbId, tvTitle, tmdbId, posterPath, seasons]);
+    }, [trailer, tvTitle, tmdbId, seasons, t.trailer]);
 
     const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? "");
 
@@ -95,7 +71,7 @@ const TvMediaSection = ({
     return (
         <section id="tv-media" className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-                <h2 className="text-2xl font-black">Медіа</h2>
+                <h2 className="text-2xl font-black">{t.media}</h2>
 
                 <div className="flex flex-wrap rounded-full border border-[var(--color-border)] bg-[var(--color-card)] p-1 shadow-sm">
                     {tabs.map((tab) => (

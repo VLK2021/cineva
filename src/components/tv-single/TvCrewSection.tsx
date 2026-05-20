@@ -3,16 +3,18 @@ import type { TvAggregateCrewMember } from "@/src/types/tv.types";
 
 type TvCrewSectionProps = {
     crew: TvAggregateCrewMember[];
+    title: string;
+    episodesLabel: string;
 };
 
-const TvCrewSection = ({ crew }: TvCrewSectionProps) => {
+const TvCrewSection = ({ crew, title, episodesLabel }: TvCrewSectionProps) => {
     if (!crew.length) return null;
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex items-center gap-2">
                 <Clapperboard className="h-5 w-5 text-[var(--color-brand)]" />
-                <h2 className="text-2xl font-black">Команда</h2>
+                <h2 className="text-2xl font-black">{title}</h2>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -31,7 +33,7 @@ const TvCrewSection = ({ crew }: TvCrewSectionProps) => {
                             </p>
 
                             <p className="mt-2 text-xs font-bold text-[var(--color-brand)]">
-                                {member.total_episode_count} серій
+                                {member.total_episode_count} {episodesLabel}
                             </p>
                         </div>
                     );

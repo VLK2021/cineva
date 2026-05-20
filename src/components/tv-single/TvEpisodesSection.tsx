@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { ChevronDown, ListVideo } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 import type { TvSeasonDetails } from "@/src/types/tv.types";
 
 type TvEpisodesSectionProps = {
@@ -13,6 +16,9 @@ const IMAGE_BASE_URL =
     process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
 
 const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     const [openedSeasonId, setOpenedSeasonId] = useState<number | null>(
         seasons[0]?.id ?? null
     );
@@ -27,7 +33,7 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex items-center gap-2">
                 <ListVideo className="h-5 w-5 text-[var(--color-brand)]" />
-                <h2 className="text-2xl font-black">Сезони та серії</h2>
+                <h2 className="text-2xl font-black">{t.seasonsEpisodes}</h2>
             </div>
 
             <div className="space-y-4">
@@ -50,8 +56,8 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                     </h3>
 
                                     <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                                        {season.episodes.length} серій ·{" "}
-                                        {season.air_date || "Дата невідома"}
+                                        {season.episodes.length} {t.episodes} ·{" "}
+                                        {season.air_date || t.unknownDate}
                                     </p>
                                 </div>
 
@@ -75,7 +81,13 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                         {season.episodes.map((episode) => (
                                             <div
                                                 key={episode.id}
-                                                className="grid gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] p-3 md:grid-cols-[220px_1fr]"
+                                                className="
+                                                    grid gap-4 rounded-2xl
+                                                    border border-[var(--color-border)]
+                                                    bg-[var(--color-background)]
+                                                    p-3
+                                                    md:grid-cols-[220px_1fr]
+                                                "
                                             >
                                                 <div className="relative aspect-video overflow-hidden rounded-xl bg-[var(--color-border)]">
                                                     {episode.still_path ? (
@@ -88,7 +100,7 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                                         />
                                                     ) : (
                                                         <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                                            Немає кадру
+                                                            {t.noFrame}
                                                         </div>
                                                     )}
                                                 </div>
@@ -100,12 +112,12 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                                         </span>
 
                                                         <span className="text-xs font-bold text-[var(--color-text-muted)]">
-                                                            {episode.air_date || "Дата невідома"}
+                                                            {episode.air_date || t.unknownDate}
                                                         </span>
 
                                                         {episode.runtime && (
                                                             <span className="text-xs font-bold text-[var(--color-text-muted)]">
-                                                                {episode.runtime} хв
+                                                                {episode.runtime} {t.minutes}
                                                             </span>
                                                         )}
 
@@ -119,7 +131,7 @@ const TvEpisodesSection = ({ seasons }: TvEpisodesSectionProps) => {
                                                     </h4>
 
                                                     <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
-                                                        {episode.overview || "Опис серії відсутній."}
+                                                        {episode.overview || t.noEpisodeDescription}
                                                     </p>
                                                 </div>
                                             </div>

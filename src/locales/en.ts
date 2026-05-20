@@ -23,6 +23,12 @@ const en = {
     watchMovie: "Watch movie",
     media: "Media",
     trailer: "Trailer",
+    seasonsEpisodes: "Seasons & Episodes",
+    episodes: "episodes",
+    unknownDate: "Unknown date",
+    noFrame: "No frame",
+    minutes: "min",
+    noEpisodeDescription: "Episode description is not available.",
 }
 
 export default en;

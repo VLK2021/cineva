@@ -4,26 +4,42 @@ import type { TvSeason } from "@/src/types/tv.types";
 
 type TvSeasonsSectionProps = {
     seasons: TvSeason[];
+    labels: {
+        title: string;
+        noPoster: string;
+        episodes: string;
+        releaseDate: string;
+        noDescription: string;
+    };
 };
 
 const IMAGE_BASE_URL =
     process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
 
-const TvSeasonsSection = ({ seasons }: TvSeasonsSectionProps) => {
+const TvSeasonsSection = ({
+                              seasons,
+                              labels,
+                          }: TvSeasonsSectionProps) => {
     if (!seasons.length) return null;
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex items-center gap-2">
                 <Layers className="h-5 w-5 text-[var(--color-brand)]" />
-                <h2 className="text-2xl font-black">Сезони</h2>
+                <h2 className="text-2xl font-black">{labels.title}</h2>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {seasons.map((season) => (
                     <div
                         key={season.id}
-                        className="grid grid-cols-[110px_1fr] overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-sm"
+                        className="
+                            grid grid-cols-[110px_1fr]
+                            overflow-hidden rounded-3xl
+                            border border-[var(--color-border)]
+                            bg-[var(--color-card)]
+                            shadow-sm
+                        "
                     >
                         <div className="relative min-h-[165px] bg-[var(--color-border)]">
                             {season.poster_path ? (
@@ -36,7 +52,7 @@ const TvSeasonsSection = ({ seasons }: TvSeasonsSectionProps) => {
                                 />
                             ) : (
                                 <div className="flex h-full items-center justify-center text-xs text-[var(--color-text-muted)]">
-                                    Немає постера
+                                    {labels.noPoster}
                                 </div>
                             )}
                         </div>
@@ -45,15 +61,15 @@ const TvSeasonsSection = ({ seasons }: TvSeasonsSectionProps) => {
                             <h3 className="font-black">{season.name}</h3>
 
                             <p className="mt-2 text-sm font-bold text-[var(--color-brand)]">
-                                {season.episode_count} серій
+                                {season.episode_count} {labels.episodes}
                             </p>
 
                             <p className="mt-2 text-xs text-[var(--color-text-muted)]">
-                                Дата виходу: {season.air_date || "—"}
+                                {labels.releaseDate}: {season.air_date || "—"}
                             </p>
 
                             <p className="mt-3 line-clamp-4 text-sm leading-6 text-[var(--color-text-muted)]">
-                                {season.overview || "Опис відсутній."}
+                                {season.overview || labels.noDescription}
                             </p>
                         </div>
                     </div>

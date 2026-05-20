@@ -4,16 +4,25 @@ import type { TvReview } from "@/src/types/tv.types";
 
 type TvReviewsSectionProps = {
     reviews: TvReview[];
+    lang: "uk" | "en";
+    labels: {
+        title: string;
+        readFull: string;
+    };
 };
 
-const TvReviewsSection = ({ reviews }: TvReviewsSectionProps) => {
+const TvReviewsSection = ({
+                              reviews,
+                              lang,
+                              labels,
+                          }: TvReviewsSectionProps) => {
     if (!reviews.length) return null;
 
     return (
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex items-center gap-2">
                 <MessageSquare className="h-5 w-5 text-[var(--color-brand)]" />
-                <h2 className="text-2xl font-black">Відгуки</h2>
+                <h2 className="text-2xl font-black">{labels.title}</h2>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-2">
@@ -25,8 +34,11 @@ const TvReviewsSection = ({ reviews }: TvReviewsSectionProps) => {
                         <div className="flex items-center justify-between gap-3">
                             <div>
                                 <p className="font-black">{review.author}</p>
+
                                 <p className="text-xs text-[var(--color-text-muted)]">
-                                    {new Date(review.created_at).toLocaleDateString("uk-UA")}
+                                    {new Date(review.created_at).toLocaleDateString(
+                                        lang === "en" ? "en-US" : "uk-UA"
+                                    )}
                                 </p>
                             </div>
 
@@ -46,7 +58,7 @@ const TvReviewsSection = ({ reviews }: TvReviewsSectionProps) => {
                             target="_blank"
                             className="mt-4 inline-flex text-sm font-bold text-[var(--color-brand)]"
                         >
-                            Читати повністю
+                            {labels.readFull}
                         </Link>
                     </div>
                 ))}

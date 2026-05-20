@@ -23,6 +23,12 @@ const uk = {
     watchMovie: "Дивитись фільм",
     media: "Медіа",
     trailer: "Трейлер",
+    seasonsEpisodes: "Сезони та серії",
+    episodes: "серій",
+    unknownDate: "Дата невідома",
+    noFrame: "Немає кадру",
+    minutes: "хв",
+    noEpisodeDescription: "Опис серії відсутній.",
 }
 
 export default uk;

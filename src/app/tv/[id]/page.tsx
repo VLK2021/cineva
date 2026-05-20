@@ -95,11 +95,73 @@ export default async function TvPage({ params }: TvPageProps) {
                 />
             </div>
 
-            <TvAdvancedInfoSection tv={tv} />
+            <TvAdvancedInfoSection
+                tv={tv}
+                labels={{
+                    fullInfo: lang === "en" ? "Full information" : "Повна інформація",
+                    status: lang === "en" ? "Status" : "Статус",
+                    type: lang === "en" ? "Type" : "Тип",
+                    inProduction: lang === "en" ? "In production" : "У виробництві",
+                    yes: lang === "en" ? "Yes" : "Так",
+                    no: lang === "en" ? "No" : "Ні",
+                    episodeRuntime:
+                        lang === "en"
+                            ? "Episode runtime"
+                            : "Тривалість серії",
+                    firstAirDate:
+                        lang === "en"
+                            ? "First air date"
+                            : "Перший ефір",
+                    lastAirDate:
+                        lang === "en"
+                            ? "Last air date"
+                            : "Останній ефір",
+                    seasons: lang === "en" ? "Seasons" : "Сезонів",
+                    episodes: lang === "en" ? "Episodes" : "Серій",
+                    tmdbRating:
+                        lang === "en"
+                            ? "TMDB rating"
+                            : "Рейтинг TMDB",
+                    votes: lang === "en" ? "Votes" : "Голосів",
+                    popularity: lang === "en" ? "Popularity" : "Популярність",
+                    originalLanguage:
+                        lang === "en"
+                            ? "Original language"
+                            : "Оригінальна мова",
+                    networks: lang === "en" ? "Networks" : "Мережі",
+                    countries: lang === "en" ? "Countries" : "Країни",
+                    dates: lang === "en" ? "Dates" : "Дати",
+                    noData: lang === "en" ? "No data" : "Немає даних",
+                    minutes: lang === "en" ? "min" : "хв",
+                }}
+            />
 
-            <TvExternalSection tv={tv} />
+            <TvExternalSection
+                tv={tv}
+                labels={{
+                    title: lang === "en"
+                        ? "External links"
+                        : "Зовнішні посилання",
 
-            <TvMetaSections tv={tv} />
+                    officialSite: lang === "en"
+                        ? "Official website"
+                        : "Офіційний сайт",
+                }}
+            />
+
+            <TvMetaSections
+                tv={tv}
+                labels={{
+                    ageRatings: lang === "en" ? "Age ratings" : "Вікові рейтинги",
+                    keywords: lang === "en" ? "Keywords" : "Ключові слова",
+                    alternativeTitles:
+                        lang === "en"
+                            ? "Alternative titles"
+                            : "Альтернативні назви",
+                    translations: lang === "en" ? "Translations" : "Переклади",
+                    noData: lang === "en" ? "No data" : "Немає даних",
+                }}
+            />
 
             <TvMediaSection
                 trailer={trailer}
@@ -110,15 +172,43 @@ export default async function TvPage({ params }: TvPageProps) {
                 seasons={validSeasonDetails}
             />
 
-            <TvCastSection cast={cast} />
+            <TvCastSection
+                cast={cast}
+                title={lang === "en" ? "Actors" : "Актори"}
+                noPhotoLabel={lang === "en" ? "No photo" : "Немає фото"}
+                episodesLabel={lang === "en" ? "episodes" : "серій"}
+            />
 
-            <TvCrewSection crew={crew} />
+            <TvCrewSection
+                crew={crew}
+                title={lang === "en" ? "Crew" : "Команда"}
+                episodesLabel={lang === "en" ? "episodes" : "серій"}
+            />
 
-            <TvSeasonsSection seasons={tv.seasons} />
+            <TvSeasonsSection
+                seasons={tv.seasons}
+                labels={{
+                    title: lang === "en" ? "Seasons" : "Сезони",
+                    noPoster: lang === "en" ? "No poster" : "Немає постера",
+                    episodes: lang === "en" ? "episodes" : "серій",
+                    releaseDate: lang === "en" ? "Release date" : "Дата виходу",
+                    noDescription:
+                        lang === "en"
+                            ? "Description is not available."
+                            : "Опис відсутній.",
+                }}
+            />
 
             <TvEpisodesSection seasons={validSeasonDetails} />
 
-            <TvReviewsSection reviews={reviews} />
+            <TvReviewsSection
+                reviews={reviews}
+                lang={lang === "en" ? "en" : "uk"}
+                labels={{
+                    title: lang === "en" ? "Reviews" : "Відгуки",
+                    readFull: lang === "en" ? "Read full review" : "Читати повністю",
+                }}
+            />
 
             <TvRelatedSection
                 title={lang === "en" ? "Similar TV shows" : "Схожі серіали"}

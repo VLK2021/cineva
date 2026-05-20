@@ -3,9 +3,19 @@ import type { TvDetailsWithAppend } from "@/src/types/tv.types";
 
 type TvMetaSectionsProps = {
     tv: TvDetailsWithAppend;
+    labels: {
+        ageRatings: string;
+        keywords: string;
+        alternativeTitles: string;
+        translations: string;
+        noData: string;
+    };
 };
 
-const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
+const TvMetaSections = ({
+                            tv,
+                            labels,
+                        }: TvMetaSectionsProps) => {
     const ratings = tv.content_ratings?.results ?? [];
     const keywords = tv.keywords?.results ?? [];
     const alternativeTitles = tv.alternative_titles?.results ?? [];
@@ -17,7 +27,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                 <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 shadow-sm">
                     <div className="mb-4 flex items-center gap-2">
                         <BadgeCheck className="h-5 w-5 text-[var(--color-brand)]" />
-                        <h2 className="text-xl font-black">Вікові рейтинги</h2>
+                        <h2 className="text-xl font-black">
+                            {labels.ageRatings}
+                        </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
@@ -31,7 +43,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                                 </span>
                             ))
                         ) : (
-                            <p className="text-sm text-[var(--color-text-muted)]">Немає даних</p>
+                            <p className="text-sm text-[var(--color-text-muted)]">
+                                {labels.noData}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -39,7 +53,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                 <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 shadow-sm">
                     <div className="mb-4 flex items-center gap-2">
                         <Tags className="h-5 w-5 text-[var(--color-brand)]" />
-                        <h2 className="text-xl font-black">Ключові слова</h2>
+                        <h2 className="text-xl font-black">
+                            {labels.keywords}
+                        </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
@@ -53,7 +69,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                                 </span>
                             ))
                         ) : (
-                            <p className="text-sm text-[var(--color-text-muted)]">Немає даних</p>
+                            <p className="text-sm text-[var(--color-text-muted)]">
+                                {labels.noData}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -61,7 +79,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                 <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 shadow-sm">
                     <div className="mb-4 flex items-center gap-2">
                         <Languages className="h-5 w-5 text-[var(--color-brand)]" />
-                        <h2 className="text-xl font-black">Альтернативні назви</h2>
+                        <h2 className="text-xl font-black">
+                            {labels.alternativeTitles}
+                        </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
@@ -75,7 +95,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                                 </span>
                             ))
                         ) : (
-                            <p className="text-sm text-[var(--color-text-muted)]">Немає даних</p>
+                            <p className="text-sm text-[var(--color-text-muted)]">
+                                {labels.noData}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -83,7 +105,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                 <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 shadow-sm">
                     <div className="mb-4 flex items-center gap-2">
                         <Languages className="h-5 w-5 text-[var(--color-brand)]" />
-                        <h2 className="text-xl font-black">Переклади</h2>
+                        <h2 className="text-xl font-black">
+                            {labels.translations}
+                        </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
@@ -97,7 +121,9 @@ const TvMetaSections = ({ tv }: TvMetaSectionsProps) => {
                                 </span>
                             ))
                         ) : (
-                            <p className="text-sm text-[var(--color-text-muted)]">Немає даних</p>
+                            <p className="text-sm text-[var(--color-text-muted)]">
+                                {labels.noData}
+                            </p>
                         )}
                     </div>
                 </div>
