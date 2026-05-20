@@ -6,6 +6,10 @@ type TmdbFetchOptions = {
     cache?: RequestCache;
 };
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const RETRY_STATUSES = [502, 503, 504];
+
 const tmdbFetch = async <T>(
     endpoint: string,
     options: TmdbFetchOptions = {}
@@ -18,23 +22,45 @@ const tmdbFetch = async <T>(
         throw new Error("TMDB_ACCESS_TOKEN is missing");
     }
 
-    const response = await fetch(`${TMDB_BASE_URL}${endpoint}`, {
-        headers: {
-            Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
-            accept: "application/json",
-        },
-        cache: options.cache,
-        next:
-            options.revalidate !== undefined
-                ? { revalidate: options.revalidate }
-                : undefined,
-    });
+    const url = `${TMDB_BASE_URL}${endpoint}`;
 
-    if (!response.ok) {
-        throw new Error(`TMDB request failed: ${response.status}`);
+    let lastError: unknown = null;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
+                    accept: "application/json",
+                },
+                cache: options.cache,
+                next:
+                    options.revalidate !== undefined
+                        ? { revalidate: options.revalidate }
+                        : undefined,
+            });
+
+            if (response.ok) {
+                return response.json();
+            }
+
+            if (RETRY_STATUSES.includes(response.status) && attempt < 3) {
+                await sleep(500 * attempt);
+                continue;
+            }
+
+            throw new Error(`TMDB request failed: ${response.status}`);
+        } catch (error) {
+            lastError = error;
+
+            if (attempt < 3) {
+                await sleep(500 * attempt);
+                continue;
+            }
+        }
     }
 
-    return response.json();
+    throw lastError;
 };
 
 export { tmdbFetch };
