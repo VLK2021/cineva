@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { BackButton } from "@/src/components/common/BackButton";
@@ -15,6 +16,7 @@ import {
     TvMediaSection,
 } from "@/src/components/tv-single";
 import {
+    getTvDetails,
     getTvDetailsWithAppend,
     getTvSeasonDetails,
     getTvVideos,
@@ -27,6 +29,53 @@ type TvPageProps = {
         id: string;
     }>;
 };
+
+const IMAGE_BASE_URL =
+    process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
+
+export async function generateMetadata({
+                                           params,
+                                       }: TvPageProps): Promise<Metadata> {
+    const { id } = await params;
+
+    const tv = await getTvDetails(id, "en-US");
+
+    const title = tv.name || tv.original_name || "TV Series";
+
+    const description =
+        tv.overview ||
+        `Watch ${title}, episodes, cast, ratings and full TV series information on CINEVA.`;
+
+    return {
+        title: `${title} | CINEVA`,
+        description,
+
+        openGraph: {
+            title: `${title} | CINEVA`,
+            description,
+            type: "video.tv_show",
+            images: tv.poster_path
+                ? [
+                    {
+                        url: `${IMAGE_BASE_URL}/w780${tv.poster_path}`,
+                        width: 780,
+                        height: 1170,
+                        alt: title,
+                    },
+                ]
+                : [],
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            title: `${title} | CINEVA`,
+            description,
+            images: tv.poster_path
+                ? [`${IMAGE_BASE_URL}/w780${tv.poster_path}`]
+                : [],
+        },
+    };
+}
 
 export default async function TvPage({ params }: TvPageProps) {
     const { id } = await params;
@@ -142,7 +191,6 @@ export default async function TvPage({ params }: TvPageProps) {
                     title: lang === "en"
                         ? "External links"
                         : "Зовнішні посилання",
-
                     officialSite: lang === "en"
                         ? "Official website"
                         : "Офіційний сайт",
