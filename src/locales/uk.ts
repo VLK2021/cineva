@@ -32,6 +32,7 @@ const uk = {
     filmography: "Фільмографія",
     works: "робіт",
     noPoster: "Немає постера",
+    search: "Пошук",
 }
 
 export default uk;

@@ -32,6 +32,7 @@ const en = {
     filmography: "Filmography",
     works: "works",
     noPoster: "No poster",
+    search: "Search",
 }
 
 export default en;
