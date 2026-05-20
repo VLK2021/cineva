@@ -29,6 +29,9 @@ const en = {
     noFrame: "No frame",
     minutes: "min",
     noEpisodeDescription: "Episode description is not available.",
+    filmography: "Filmography",
+    works: "works",
+    noPoster: "No poster",
 }
 
 export default en;

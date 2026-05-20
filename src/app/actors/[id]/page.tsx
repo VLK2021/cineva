@@ -36,17 +36,46 @@ export default async function ActorPage({ params }: ActorPageProps) {
                     <BackButton fallbackHref="/actors" />
                 </div>
 
-                <ActorHero actor={actor} />
+                <ActorHero
+                    actor={actor}
+                    labels={{
+                        noPhoto: lang === "en" ? "No photo" : "Немає фото",
+                        actor: lang === "en" ? "Actor" : "Актор",
+                        unknownDate: lang === "en" ? "Unknown date" : "Дата невідома",
+                        biographyMissing:
+                            lang === "en"
+                                ? "Biography is not available."
+                                : "Біографія відсутня.",
+                        genderFemale: lang === "en" ? "Female" : "Жінка",
+                        genderMale: lang === "en" ? "Male" : "Чоловік",
+                        genderNonBinary:
+                            lang === "en" ? "Non-binary person" : "Небінарна персона",
+                        genderUnknown: lang === "en" ? "Unknown" : "Невідомо",
+                    }}
+                />
             </div>
 
-            <ActorExternalLinks actor={actor} />
+            <ActorExternalLinks
+                actor={actor}
+                labels={{
+                    title: lang === "en" ? "Links" : "Посилання",
+                    officialSite:
+                        lang === "en" ? "Official website" : "Офіційний сайт",
+                }}
+            />
 
             <ActorCreditsSection
                 movieCredits={movieCredits}
                 tvCredits={tvCredits}
             />
 
-            <ActorImagesSection images={images} />
+            <ActorImagesSection
+                images={images}
+                labels={{
+                    title: lang === "en" ? "Photos" : "Фото",
+                    alt: lang === "en" ? "Actor photo" : "Фото актора",
+                }}
+            />
         </main>
     );
 }

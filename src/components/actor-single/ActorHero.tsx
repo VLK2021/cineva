@@ -4,19 +4,33 @@ import type { ActorDetailsWithAppend } from "@/src/types/actor.types";
 
 type ActorHeroProps = {
     actor: ActorDetailsWithAppend;
+    labels: {
+        noPhoto: string;
+        actor: string;
+        unknownDate: string;
+        biographyMissing: string;
+        genderFemale: string;
+        genderMale: string;
+        genderNonBinary: string;
+        genderUnknown: string;
+    };
 };
 
 const IMAGE_BASE_URL =
     process.env.TMDB_IMAGE_BASE_URL ?? "https://image.tmdb.org/t/p";
 
-const getGender = (gender: number) => {
-    if (gender === 1) return "Жінка";
-    if (gender === 2) return "Чоловік";
-    if (gender === 3) return "Небінарна персона";
-    return "Невідомо";
+const getGender = (
+    gender: number,
+    labels: ActorHeroProps["labels"]
+) => {
+    if (gender === 1) return labels.genderFemale;
+    if (gender === 2) return labels.genderMale;
+    if (gender === 3) return labels.genderNonBinary;
+
+    return labels.genderUnknown;
 };
 
-const ActorHero = ({ actor }: ActorHeroProps) => {
+const ActorHero = ({ actor, labels }: ActorHeroProps) => {
     const profile = actor.profile_path
         ? `${IMAGE_BASE_URL}/w500${actor.profile_path}`
         : null;
@@ -39,7 +53,7 @@ const ActorHero = ({ actor }: ActorHeroProps) => {
                             />
                         ) : (
                             <div className="flex h-full items-center justify-center text-[var(--color-text-muted)]">
-                                Немає фото
+                                {labels.noPhoto}
                             </div>
                         )}
                     </div>
@@ -48,7 +62,7 @@ const ActorHero = ({ actor }: ActorHeroProps) => {
                 <div className="flex max-w-4xl flex-col justify-center">
                     <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-2 text-xs font-black uppercase tracking-wide text-[var(--color-brand)]">
                         <User className="h-4 w-4" />
-                        Актор
+                        {labels.actor}
                     </div>
 
                     <h1 className="text-4xl font-black leading-tight text-[var(--color-text)] sm:text-5xl lg:text-6xl">
@@ -63,7 +77,7 @@ const ActorHero = ({ actor }: ActorHeroProps) => {
 
                         <span className="inline-flex items-center gap-2 rounded-full bg-[var(--color-background)] px-4 py-2">
                             <Calendar className="h-4 w-4" />
-                            {actor.birthday || "Дата невідома"}
+                            {actor.birthday || labels.unknownDate}
                         </span>
 
                         {actor.place_of_birth && (
@@ -74,7 +88,7 @@ const ActorHero = ({ actor }: ActorHeroProps) => {
                         )}
 
                         <span className="rounded-full bg-[var(--color-background)] px-4 py-2">
-                            {getGender(actor.gender)}
+                            {getGender(actor.gender, labels)}
                         </span>
                     </div>
 
@@ -92,7 +106,7 @@ const ActorHero = ({ actor }: ActorHeroProps) => {
                     )}
 
                     <p className="mt-7 max-w-3xl text-base leading-8 text-[var(--color-text-muted)]">
-                        {actor.biography || "Біографія відсутня."}
+                        {actor.biography || labels.biographyMissing}
                     </p>
                 </div>
             </div>

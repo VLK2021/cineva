@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Clapperboard } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/src/context";
+import uk from "@/src/locales/uk";
+import en from "@/src/locales/en";
 import type { ActorMovieCredit, ActorTvCredit } from "@/src/types/actor.types";
 
 type ActorCreditsSectionProps = {
@@ -19,12 +22,18 @@ const getYear = (date?: string) => {
     return date.slice(0, 4);
 };
 
-const sortByDate = <T extends { release_date?: string; first_air_date?: string }>(
+const sortByDate = <
+    T extends {
+        release_date?: string;
+        first_air_date?: string;
+    }
+>(
     items: T[]
 ) => {
     return [...items].sort((a, b) => {
         const dateA = a.release_date || a.first_air_date || "";
         const dateB = b.release_date || b.first_air_date || "";
+
         return dateB.localeCompare(dateA);
     });
 };
@@ -33,6 +42,9 @@ const ActorCreditsSection = ({
                                  movieCredits,
                                  tvCredits,
                              }: ActorCreditsSectionProps) => {
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
     const [opened, setOpened] = useState<"movies" | "tv" | null>("movies");
 
     const movies = sortByDate(movieCredits).slice(0, 60);
@@ -46,7 +58,7 @@ const ActorCreditsSection = ({
         <section className="px-4 py-10 sm:px-6 lg:px-10">
             <div className="mb-5 flex items-center gap-2">
                 <Clapperboard className="h-5 w-5 text-[var(--color-brand)]" />
-                <h2 className="text-2xl font-black">Фільмографія</h2>
+                <h2 className="text-2xl font-black">{t.filmography}</h2>
             </div>
 
             <div className="space-y-4">
@@ -57,14 +69,17 @@ const ActorCreditsSection = ({
                         className="flex w-full items-center justify-between gap-4 p-5 text-left transition hover:bg-[var(--color-background)]"
                     >
                         <div>
-                            <h3 className="text-lg font-black">Фільми</h3>
+                            <h3 className="text-lg font-black">{t.films}</h3>
+
                             <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                                {movies.length} робіт
+                                {movies.length} {t.works}
                             </p>
                         </div>
 
                         <ChevronDown
-                            className={`h-5 w-5 transition ${opened === "movies" ? "rotate-180" : ""}`}
+                            className={`h-5 w-5 transition ${
+                                opened === "movies" ? "rotate-180" : ""
+                            }`}
                         />
                     </button>
 
@@ -87,7 +102,7 @@ const ActorCreditsSection = ({
                                             />
                                         ) : (
                                             <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                                Немає постера
+                                                {t.noPoster}
                                             </div>
                                         )}
                                     </div>
@@ -96,9 +111,11 @@ const ActorCreditsSection = ({
                                         <p className="line-clamp-2 text-sm font-black">
                                             {movie.title}
                                         </p>
+
                                         <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                                             {getYear(movie.release_date)}
                                         </p>
+
                                         <p className="mt-1 line-clamp-1 text-xs text-[var(--color-brand)]">
                                             {movie.character || movie.job || "—"}
                                         </p>
@@ -116,14 +133,17 @@ const ActorCreditsSection = ({
                         className="flex w-full items-center justify-between gap-4 p-5 text-left transition hover:bg-[var(--color-background)]"
                     >
                         <div>
-                            <h3 className="text-lg font-black">Серіали</h3>
+                            <h3 className="text-lg font-black">{t.serials}</h3>
+
                             <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                                {tv.length} робіт
+                                {tv.length} {t.works}
                             </p>
                         </div>
 
                         <ChevronDown
-                            className={`h-5 w-5 transition ${opened === "tv" ? "rotate-180" : ""}`}
+                            className={`h-5 w-5 transition ${
+                                opened === "tv" ? "rotate-180" : ""
+                            }`}
                         />
                     </button>
 
@@ -146,7 +166,7 @@ const ActorCreditsSection = ({
                                             />
                                         ) : (
                                             <div className="flex h-full items-center justify-center text-sm text-[var(--color-text-muted)]">
-                                                Немає постера
+                                                {t.noPoster}
                                             </div>
                                         )}
                                     </div>
@@ -155,9 +175,11 @@ const ActorCreditsSection = ({
                                         <p className="line-clamp-2 text-sm font-black">
                                             {item.name}
                                         </p>
+
                                         <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                                             {getYear(item.first_air_date)}
                                         </p>
+
                                         <p className="mt-1 line-clamp-1 text-xs text-[var(--color-brand)]">
                                             {item.character || item.job || "—"}
                                         </p>

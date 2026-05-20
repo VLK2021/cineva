@@ -29,6 +29,9 @@ const uk = {
     noFrame: "Немає кадру",
     minutes: "хв",
     noEpisodeDescription: "Опис серії відсутній.",
+    filmography: "Фільмографія",
+    works: "робіт",
+    noPoster: "Немає постера",
 }
 
 export default uk;
