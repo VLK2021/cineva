@@ -24,6 +24,14 @@ export const metadata: Metadata = {
     },
     description:
         "CINEVA — каталог фільмів, серіалів та акторів з рейтингами, трейлерами, описами й пошуком.",
+    robots: {
+        index: false,
+        follow: false,
+        googleBot: {
+            index: false,
+            follow: false,
+        },
+    },
 };
 
 type Language = "uk" | "en";
