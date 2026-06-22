@@ -7,6 +7,11 @@ const MAX_REQUESTS_GLOBAL = 120;
 const routeRequests = new Map<string, { count: number; resetAt: number }>();
 const globalRequests = new Map<string, { count: number; resetAt: number }>();
 
+const ALLOWED_PREVIEW_USER_AGENTS = [
+    "linkedinbot",
+    "linkedinbot/1.0",
+];
+
 const BLOCKED_USER_AGENTS = [
     "ahrefs",
     "semrush",
@@ -34,7 +39,6 @@ const BLOCKED_USER_AGENTS = [
     "facebookexternalhit",
     "meta-externalagent",
     "twitterbot",
-    "linkedinbot",
     "pinterestbot",
     "telegrambot",
     "discordbot",
@@ -78,6 +82,14 @@ function getClientIp(request: NextRequest): string {
         request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
         request.headers.get("x-real-ip") ||
         "unknown"
+    );
+}
+
+function isAllowedPreviewBot(userAgent: string): boolean {
+    const normalized = userAgent.toLowerCase();
+
+    return ALLOWED_PREVIEW_USER_AGENTS.some((bot) =>
+        normalized.includes(bot)
     );
 }
 
@@ -134,7 +146,7 @@ export function proxy(request: NextRequest) {
         return new NextResponse("Forbidden", { status: 403 });
     }
 
-    if (isBlockedUserAgent(userAgent)) {
+    if (!isAllowedPreviewBot(userAgent) && isBlockedUserAgent(userAgent)) {
         console.warn(`[BLOCKED_UA] ${ip} | ${pathname} | ${userAgent}`);
         return new NextResponse("Forbidden", { status: 403 });
     }
